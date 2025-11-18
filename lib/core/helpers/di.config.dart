@@ -19,7 +19,6 @@ import 'package:expense_tracker/core/helpers/global_notification.dart'
 import 'package:expense_tracker/core/helpers/loading_helper.dart' as _i485;
 import 'package:expense_tracker/core/helpers/local_storage/local_storage.dart'
     as _i921;
-import 'package:expense_tracker/core/helpers/location_service.dart' as _i1061;
 import 'package:expense_tracker/core/helpers/login_helper.dart' as _i370;
 import 'package:expense_tracker/core/helpers/psermission_services.dart'
     as _i1005;
@@ -88,42 +87,41 @@ extension GetItInjectableX on _i174.GetIt {
       environment,
       environmentFilter,
     );
-    gh.factory<_i204.AppFileService>(() => _i204.AppFileService());
-    gh.factory<_i1061.LocationService>(() => _i1061.LocationService());
-    gh.factory<_i1005.PermissionServices>(() => _i1005.PermissionServices());
     gh.factory<_i325.ShareServices>(() => _i325.ShareServices());
-    gh.factory<_i931.AddExpense>(() => _i931.AddExpense());
-    gh.factory<_i620.GetCategories>(() => _i620.GetCategories());
+    gh.factory<_i204.AppFileService>(() => _i204.AppFileService());
+    gh.factory<_i1005.PermissionServices>(() => _i1005.PermissionServices());
     gh.factory<_i335.GetCurrencyRate>(() => _i335.GetCurrencyRate());
     gh.factory<_i217.GetExpenses>(() => _i217.GetExpenses());
+    gh.factory<_i620.GetCategories>(() => _i620.GetCategories());
+    gh.factory<_i931.AddExpense>(() => _i931.AddExpense());
     gh.factory<_i25.GetExpenseSummary>(() => _i25.GetExpenseSummary());
     gh.factory<_i974.SyncOfflineExpenses>(() => _i974.SyncOfflineExpenses());
     gh.singleton<_i485.LoadingHelper>(() => _i485.LoadingHelper());
+    gh.lazySingleton<_i721.NetworkInfoImpl>(() => _i721.NetworkInfoImpl());
     gh.lazySingleton<_i370.FirebaseAnalyticsHelper>(
         () => _i370.FirebaseAnalyticsHelper());
     gh.lazySingleton<_i557.RealTimeDatabaseService>(
         () => _i557.RealTimeDatabaseService());
-    gh.lazySingleton<_i577.AdaptivePicker>(() => _i577.AdaptivePicker());
+    gh.lazySingleton<_i449.DioOptions>(() => _i449.DioOptions());
+    gh.lazySingleton<_i80.HandleErrors>(() => _i80.HandleErrors());
+    gh.lazySingleton<_i341.HandleRequestBody>(() => _i341.HandleRequestBody());
+    gh.lazySingleton<_i42.HandleJsonResponse<dynamic>>(
+        () => _i42.HandleJsonResponse<dynamic>());
+    gh.lazySingleton<_i1020.DioHeader>(() => _i1020.DioHeader());
+    gh.lazySingleton<_i684.Patch>(() => _i684.Patch());
+    gh.lazySingleton<_i310.Post>(() => _i310.Post());
+    gh.lazySingleton<_i86.Delete>(() => _i86.Delete());
+    gh.lazySingleton<_i658.Get>(() => _i658.Get());
+    gh.lazySingleton<_i102.Put>(() => _i102.Put());
     gh.lazySingleton<_i214.GlobalContext>(() => _i214.GlobalContext());
+    gh.lazySingleton<_i921.LocalStorage>(() => _i921.LocalStorage());
     gh.lazySingleton<_i1059.GlobalNotification>(
         () => _i1059.GlobalNotification());
+    gh.lazySingleton<_i577.AdaptivePicker>(() => _i577.AdaptivePicker());
+    gh.lazySingleton<_i262.Utilities>(() => _i262.Utilities());
     gh.lazySingleton<_i370.LoginHelper>(() => _i370.LoginHelper());
     gh.lazySingleton<_i247.RateAppHelper>(() => _i247.RateAppHelper());
     gh.lazySingleton<_i529.SentryHelper>(() => _i529.SentryHelper());
-    gh.lazySingleton<_i262.Utilities>(() => _i262.Utilities());
-    gh.lazySingleton<_i86.Delete>(() => _i86.Delete());
-    gh.lazySingleton<_i658.Get>(() => _i658.Get());
-    gh.lazySingleton<_i684.Patch>(() => _i684.Patch());
-    gh.lazySingleton<_i310.Post>(() => _i310.Post());
-    gh.lazySingleton<_i102.Put>(() => _i102.Put());
-    gh.lazySingleton<_i1020.DioHeader>(() => _i1020.DioHeader());
-    gh.lazySingleton<_i449.DioOptions>(() => _i449.DioOptions());
-    gh.lazySingleton<_i80.HandleErrors>(() => _i80.HandleErrors());
-    gh.lazySingleton<_i42.HandleJsonResponse<dynamic>>(
-        () => _i42.HandleJsonResponse<dynamic>());
-    gh.lazySingleton<_i341.HandleRequestBody>(() => _i341.HandleRequestBody());
-    gh.lazySingleton<_i721.NetworkInfoImpl>(() => _i721.NetworkInfoImpl());
-    gh.lazySingleton<_i921.LocalStorage>(() => _i921.LocalStorage());
     gh.factory<_i978.ExpenseRepository>(() => _i1053.ImplExpenseRepository());
     gh.factory<_i896.AuthRemoteDataSource>(
         () => _i943.ImplAuthRemoteDataSource());
