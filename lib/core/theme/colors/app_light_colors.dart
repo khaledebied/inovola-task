@@ -3,7 +3,7 @@ import 'package:expense_tracker/core/theme/colors/app_colors.dart';
 
 class AppLightColors extends AppColors {
   @override
-  Color get primary => const Color(0xff248C90);
+  Color get primary => const Color(0xff1d55f3);
 
   @override
   Color get secondary => const Color(0xff30e3a0);
