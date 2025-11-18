@@ -1,13 +1,12 @@
 import 'dart:io';
 import 'package:expense_tracker/core/bloc/generic_cubit/generic_cubit.dart';
-import 'package:expense_tracker/core/theme/colors/colors_extension.dart';
 import 'package:expense_tracker/features/expense_tracker/presentaion/manager/add_expense_cubit/add_expense_cubit.dart';
 import 'package:expense_tracker/features/expense_tracker/presentaion/pages/expense_tracker_screen/widgets/category_selection_grid.dart';
-import 'package:expense_tracker/features/expense_tracker/presentaion/pages/expense_tracker_screen/widgets/currency_dropdown.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:image_picker/image_picker.dart';
 
+/// Screen for adding a new expense with category, amount, date, and receipt
 class AddExpenseScreen extends StatefulWidget {
   const AddExpenseScreen({Key? key}) : super(key: key);
 
@@ -16,10 +15,19 @@ class AddExpenseScreen extends StatefulWidget {
 }
 
 class _AddExpenseScreenState extends State<AddExpenseScreen> {
+  // Constants for UI styling
+  static const Color _backgroundColor = Color(0xFFF8F9FA);
+  static const Color _primaryColor = Color(0xFF6C5CE7);
+  static const Color _textColor = Color(0xFF2D3436);
+  static const Color _hintColor = Color(0xFFB2BEC3);
+  static const Color _inputBackgroundColor = Color(0xFFF5F5F5);
+  static const double _borderRadius = 12.0;
+  static const double _sectionSpacing = 24.0;
+  static const double _itemSpacing = 12.0;
+
   late AddExpenseCubit _cubit;
   final _formKey = GlobalKey<FormState>();
   final _amountController = TextEditingController();
-  final _descriptionController = TextEditingController();
 
   @override
   void initState() {
@@ -31,7 +39,6 @@ class _AddExpenseScreenState extends State<AddExpenseScreen> {
   void dispose() {
     _cubit.close();
     _amountController.dispose();
-    _descriptionController.dispose();
     super.dispose();
   }
 
@@ -40,92 +47,84 @@ class _AddExpenseScreenState extends State<AddExpenseScreen> {
     return BlocProvider.value(
       value: _cubit,
       child: Scaffold(
-        backgroundColor: const Color(0xFFF8F9FA),
+        backgroundColor: _backgroundColor,
         appBar: AppBar(
           backgroundColor: Colors.white,
           elevation: 0,
           leading: IconButton(
             onPressed: () => Navigator.of(context).pop(),
-            icon: const Icon(Icons.close, color: Color(0xFF2D3436)),
+            icon: const Icon(Icons.arrow_back, color: _textColor),
           ),
           title: const Text(
             'Add Expense',
             style: TextStyle(
-              color: Color(0xFF2D3436),
+              color: _textColor,
               fontSize: 20,
               fontWeight: FontWeight.bold,
             ),
           ),
-          actions: [
-            BlocConsumer<AddExpenseCubit, GenericState<AddExpenseData>>(
-              listener: (context, state) {
-                if (state is GenericFailedState) {
-                  ScaffoldMessenger.of(context).showSnackBar(
-                    SnackBar(content: Text(state.error)),
-                  );
-                }
-              },
-              builder: (context, state) {
-                return TextButton(
-                  onPressed: state.data.isSaving ? null : _saveExpense,
-                  child: state.data.isSaving
-                      ? const SizedBox(
-                    width: 20,
-                    height: 20,
-                    child: CircularProgressIndicator(strokeWidth: 2),
-                  )
-                      : Text(
-                    'Save',
-                    style: TextStyle(
-                      color: context.colors.primary,
-                      fontSize: 16,
-                      fontWeight: FontWeight.w600,
-                    ),
-                  ),
-                );
-              },
-            ),
-            const SizedBox(width: 16),
-          ],
+          centerTitle: false,
         ),
-        body: BlocBuilder<AddExpenseCubit, GenericState<AddExpenseData>>(
+        body: BlocConsumer<AddExpenseCubit, GenericState<AddExpenseData>>(
+          listener: (context, state) {
+            if (state is GenericFailedState) {
+              ScaffoldMessenger.of(context).showSnackBar(
+                SnackBar(content: Text(state.error)),
+              );
+            }
+          },
           builder: (context, state) {
             return Form(
               key: _formKey,
-              child: SingleChildScrollView(
-                padding: const EdgeInsets.all(20),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    _buildSectionTitle('Category'),
-                    const SizedBox(height: 12),
-                    CategorySelectionGrid(
-                      categories: state.data.availableCategories,
-                      selectedCategory: state.data.category,
-                      onCategorySelected: _cubit.updateCategory,
+              child: Column(
+                children: [
+                  Expanded(
+                    child: SingleChildScrollView(
+                      padding: const EdgeInsets.all(20),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          // Category Dropdown
+                          _buildSectionTitle('Categories'),
+                          const SizedBox(height: _itemSpacing),
+                          _buildCategoryDropdown(state.data),
+                          const SizedBox(height: _sectionSpacing),
+
+                          // Amount Field
+                          _buildSectionTitle('Amount'),
+                          const SizedBox(height: _itemSpacing),
+                          _buildAmountField(state.data),
+                          const SizedBox(height: _sectionSpacing),
+
+                          // Date Picker
+                          _buildSectionTitle('Date'),
+                          const SizedBox(height: _itemSpacing),
+                          _buildDatePicker(state.data),
+                          const SizedBox(height: _sectionSpacing),
+
+                          // Attach Receipt
+                          _buildSectionTitle('Attach Receipt'),
+                          const SizedBox(height: _itemSpacing),
+                          _buildReceiptSection(state.data),
+                          const SizedBox(height: 32),
+
+                          // Categories Grid
+                          _buildSectionTitle('Categories'),
+                          const SizedBox(height: _itemSpacing),
+                          CategorySelectionGrid(
+                            categories: state.data.availableCategories,
+                            selectedCategory: state.data.category,
+                            onCategorySelected: _cubit.updateCategory,
+                          ),
+                          const SizedBox(height: _sectionSpacing),
+                        ],
+                      ),
                     ),
-                    const SizedBox(height: 32),
-
-                    _buildSectionTitle('Amount & Currency'),
-                    const SizedBox(height: 12),
-                    _buildAmountSection(state.data),
-                    const SizedBox(height: 32),
-
-                    _buildSectionTitle('Date'),
-                    const SizedBox(height: 12),
-                    _buildDatePicker(state.data),
-                    const SizedBox(height: 32),
-
-                    _buildSectionTitle('Description (Optional)'),
-                    const SizedBox(height: 12),
-                    _buildDescriptionField(),
-                    const SizedBox(height: 32),
-
-                    _buildSectionTitle('Receipt (Optional)'),
-                    const SizedBox(height: 12),
-                    _buildReceiptSection(state.data),
-                  ],
-                ),
+                  ),
+                  
+                  // Save Button at Bottom
+                  _buildSaveButton(state.data),
+                ],
               ),
             );
           },
@@ -134,224 +133,281 @@ class _AddExpenseScreenState extends State<AddExpenseScreen> {
     );
   }
 
+  /// Builds a consistent section title widget
   Widget _buildSectionTitle(String title) {
     return Text(
       title,
       style: const TextStyle(
-        fontSize: 18,
-        fontWeight: FontWeight.bold,
-        color: Color(0xFF2D3436),
+        fontSize: 16,
+        fontWeight: FontWeight.w600,
+        color: _textColor,
       ),
     );
   }
 
-  Widget _buildAmountSection(AddExpenseData data) {
+  /// Builds the category dropdown selector
+  Widget _buildCategoryDropdown(AddExpenseData data) {
     return Container(
-      padding: const EdgeInsets.all(20),
+      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 4),
       decoration: BoxDecoration(
-        color: Colors.white,
-        borderRadius: BorderRadius.circular(16),
-        boxShadow: [
-          BoxShadow(
-            color: Colors.black.withOpacity(0.05),
-            blurRadius: 10,
-            offset: const Offset(0, 2),
-          ),
-        ],
+        color: _inputBackgroundColor,
+        borderRadius: BorderRadius.circular(_borderRadius),
+        border: Border.all(color: Colors.grey.shade300, width: 1),
       ),
-      child: Column(
-        children: [
-          Row(
-            children: [
-              Expanded(
-                flex: 2,
-                child: TextFormField(
-                  controller: _amountController,
-                  keyboardType: const TextInputType.numberWithOptions(decimal: true),
-                  style: const TextStyle(
-                    fontSize: 20,
-                    fontWeight: FontWeight.bold,
-                    color: Color(0xFF2D3436),
-                  ),
-                  decoration: const InputDecoration(
-                    hintText: '0.00',
-                    border: InputBorder.none,
-                    contentPadding: EdgeInsets.symmetric(horizontal: 10,vertical: 10),
-                  ),
-                  validator: (value) {
-                    if (value == null || value.isEmpty) {
-                      return 'Please enter an amount';
-                    }
-                    if (double.tryParse(value) == null) {
-                      return 'Please enter a valid number';
-                    }
-                    return null;
-                  },
-                  onChanged: (value) {
-                    final amount = double.tryParse(value) ?? 0.0;
-                    _cubit.updateAmount(amount);
-                  },
-                ),
-              ),
-              const SizedBox(width: 16),
-              CurrencyDropdown(
-                currencies: data.availableCurrencies,
-                selectedCurrency: data.currency,
-                onCurrencyChanged: _cubit.updateCurrency,
-              ),
-            ],
+      child: DropdownButtonHideUnderline(
+        child: DropdownButton<String>(
+          isExpanded: true,
+          value: data.category.isEmpty ? null : data.category,
+          hint: const Text(
+            'Select Category',
+            style: TextStyle(color: _hintColor, fontSize: 16),
           ),
-          if (data.convertedAmount != null && data.currency != 'USD')
-            Padding(
-              padding: const EdgeInsets.only(top: 12),
-              child: Text(
-                '≈ \$${data.convertedAmount!.toStringAsFixed(2)} USD',
-                style: TextStyle(
-                  fontSize: 16,
-                  color: Colors.grey[600],
-                ),
-              ),
-            ),
-        ],
+          icon: const Icon(Icons.keyboard_arrow_down, color: _textColor),
+          style: const TextStyle(
+            color: _textColor,
+            fontSize: 16,
+          ),
+          items: data.availableCategories.map((String category) {
+            return DropdownMenuItem<String>(
+              value: category,
+              child: Text(category),
+            );
+          }).toList(),
+          onChanged: (String? newValue) {
+            if (newValue != null) {
+              _cubit.updateCategory(newValue);
+            }
+          },
+        ),
       ),
     );
   }
 
+  /// Builds the amount input field with validation
+  Widget _buildAmountField(AddExpenseData data) {
+    return Container(
+      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+      decoration: BoxDecoration(
+        color: _inputBackgroundColor,
+        borderRadius: BorderRadius.circular(_borderRadius),
+        border: Border.all(color: Colors.grey.shade300, width: 1),
+      ),
+      child: TextFormField(
+        controller: _amountController,
+        keyboardType: const TextInputType.numberWithOptions(decimal: true),
+        style: const TextStyle(
+          fontSize: 16,
+          color: _textColor,
+        ),
+        decoration: const InputDecoration(
+          hintText: '\$50,000',
+          hintStyle: TextStyle(color: _hintColor),
+          border: InputBorder.none,
+          contentPadding: EdgeInsets.zero,
+          isDense: true,
+        ),
+        validator: (value) {
+          if (value == null || value.isEmpty) {
+            return 'Please enter an amount';
+          }
+          if (double.tryParse(value.replaceAll(',', '').replaceAll('\$', '')) == null) {
+            return 'Please enter a valid number';
+          }
+          return null;
+        },
+        onChanged: (value) {
+          final cleanValue = value.replaceAll(',', '').replaceAll('\$', '');
+          final amount = double.tryParse(cleanValue) ?? 0.0;
+          _cubit.updateAmount(amount);
+        },
+      ),
+    );
+  }
+
+  /// Builds the date picker button with formatted date display
   Widget _buildDatePicker(AddExpenseData data) {
     return GestureDetector(
       onTap: () => _selectDate(context),
       child: Container(
-        padding: const EdgeInsets.all(20),
+        padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
         decoration: BoxDecoration(
-          color: Colors.white,
-          borderRadius: BorderRadius.circular(16),
-          boxShadow: [
-            BoxShadow(
-              color: Colors.black.withOpacity(0.05),
-              blurRadius: 10,
-              offset: const Offset(0, 2),
-            ),
-          ],
+          color: _inputBackgroundColor,
+          borderRadius: BorderRadius.circular(_borderRadius),
+          border: Border.all(color: Colors.grey.shade300, width: 1),
         ),
         child: Row(
           children: [
-            const Icon(Icons.calendar_today, color: Color(0xFF6C5CE7)),
-            const SizedBox(width: 16),
             Text(
-              '${data.selectedDate.day}/${data.selectedDate.month}/${data.selectedDate.year}',
+              '${data.selectedDate.day.toString().padLeft(2, '0')}/${data.selectedDate.month.toString().padLeft(2, '0')}/${data.selectedDate.year.toString().substring(2)}',
               style: const TextStyle(
                 fontSize: 16,
-                color: Color(0xFF2D3436),
+                color: _hintColor,
               ),
             ),
             const Spacer(),
-            const Icon(Icons.arrow_forward_ios, size: 16, color: Colors.grey),
+            const Icon(Icons.calendar_today_outlined, color: _textColor, size: 20),
           ],
         ),
       ),
     );
   }
 
-  Widget _buildDescriptionField() {
-    return Container(
-      padding: const EdgeInsets.all(20),
-      decoration: BoxDecoration(
-        color: Colors.white,
-        borderRadius: BorderRadius.circular(16),
-        boxShadow: [
-          BoxShadow(
-            color: Colors.black.withOpacity(0.05),
-            blurRadius: 10,
-            offset: const Offset(0, 2),
-          ),
-        ],
-      ),
-      child: TextFormField(
-        controller: _descriptionController,
-        maxLines: 3,
-        decoration: const InputDecoration(
-          hintText: 'Add a note about this expense...',
-          border: InputBorder.none,
-          contentPadding: EdgeInsets.all(10),
-        ),
-        onChanged: _cubit.updateDescription,
-      ),
-    );
-  }
-
+  /// Builds the receipt upload/preview section
   Widget _buildReceiptSection(AddExpenseData data) {
-    return Container(
-      padding: const EdgeInsets.all(20),
-      decoration: BoxDecoration(
-        color: Colors.white,
-        borderRadius: BorderRadius.circular(16),
-        boxShadow: [
-          BoxShadow(
-            color: Colors.black.withOpacity(0.05),
-            blurRadius: 10,
-            offset: const Offset(0, 2),
-          ),
-        ],
-      ),
-      child: data.receiptFile == null
-          ? GestureDetector(
-        onTap: _pickReceipt,
+    if (data.receiptFile != null) {
+      return Container(
+        padding: const EdgeInsets.all(16),
+        decoration: BoxDecoration(
+          color: _inputBackgroundColor,
+          borderRadius: BorderRadius.circular(_borderRadius),
+          border: Border.all(color: Colors.grey.shade300, width: 1),
+        ),
         child: Column(
           children: [
-            Icon(
-              Icons.camera_alt_outlined,
-              size: 48,
-              color: Colors.grey[400],
+            ClipRRect(
+              borderRadius: BorderRadius.circular(8),
+              child: Image.file(
+                data.receiptFile!,
+                height: 120,
+                width: double.infinity,
+                fit: BoxFit.cover,
+              ),
             ),
             const SizedBox(height: 12),
-            Text(
-              'Upload Receipt',
-              style: TextStyle(
-                fontSize: 16,
-                color: Colors.grey[600],
-              ),
+            Row(
+              children: [
+                Expanded(
+                  child: OutlinedButton.icon(
+                    onPressed: _pickReceipt,
+                    icon: const Icon(Icons.edit, size: 18),
+                    label: const Text('Change'),
+                    style: OutlinedButton.styleFrom(
+                      foregroundColor: const Color(0xFF2D3436),
+                      side: BorderSide(color: Colors.grey.shade300),
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(8),
+                      ),
+                    ),
+                  ),
+                ),
+                const SizedBox(width: 12),
+                Expanded(
+                  child: OutlinedButton.icon(
+                    onPressed: () => _cubit.updateReceiptFile(null),
+                    icon: const Icon(Icons.delete, size: 18, color: Colors.red),
+                    label: const Text('Remove', style: TextStyle(color: Colors.red)),
+                    style: OutlinedButton.styleFrom(
+                      foregroundColor: Colors.red,
+                      side: const BorderSide(color: Colors.red),
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(8),
+                      ),
+                    ),
+                  ),
+                ),
+              ],
             ),
           ],
         ),
-      )
-          : Column(
-        children: [
-          ClipRRect(
-            borderRadius: BorderRadius.circular(8),
-            child: Image.file(
-              data.receiptFile!,
-              height: 120,
-              width: double.infinity,
-              fit: BoxFit.cover,
+      );
+    }
+
+    return GestureDetector(
+      onTap: _pickReceipt,
+      child: Container(
+        padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+        decoration: BoxDecoration(
+          color: _inputBackgroundColor,
+          borderRadius: BorderRadius.circular(_borderRadius),
+          border: Border.all(color: Colors.grey.shade300, width: 1),
+        ),
+        child: const Row(
+          children: [
+            Text(
+              'Upload Image',
+              style: TextStyle(
+                fontSize: 16,
+                color: _hintColor,
+              ),
             ),
-          ),
-          const SizedBox(height: 12),
-          Row(
-            children: [
-              TextButton.icon(
-                onPressed: _pickReceipt,
-                icon: const Icon(Icons.edit),
-                label: const Text('Change'),
-              ),
-              const Spacer(),
-              TextButton.icon(
-                onPressed: () => _cubit.updateReceiptFile(null),
-                icon: const Icon(Icons.delete, color: Colors.red),
-                label: const Text('Remove', style: TextStyle(color: Colors.red)),
-              ),
-            ],
-          ),
-        ],
+            Spacer(),
+            Icon(Icons.camera_alt_outlined, color: _textColor, size: 20),
+          ],
+        ),
       ),
     );
   }
 
-  void _selectDate(BuildContext context) async {
+  /// Builds the save button at the bottom of the screen
+  Widget _buildSaveButton(AddExpenseData data) {
+    return Container(
+      padding: const EdgeInsets.all(20),
+      decoration: BoxDecoration(
+        color: Colors.white,
+        boxShadow: [
+          BoxShadow(
+            color: Colors.black.withOpacity(0.05),
+            blurRadius: 10,
+            offset: const Offset(0, -2),
+          ),
+        ],
+      ),
+      child: SafeArea(
+        child: SizedBox(
+          width: double.infinity,
+          height: 56,
+          child: ElevatedButton(
+            onPressed: data.isSaving ? null : _saveExpense,
+            style: ElevatedButton.styleFrom(
+              backgroundColor: _primaryColor,
+              foregroundColor: Colors.white,
+              disabledBackgroundColor: _primaryColor.withOpacity(0.6),
+              elevation: 0,
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(_borderRadius),
+              ),
+            ),
+            child: data.isSaving
+                ? const SizedBox(
+                    width: 24,
+                    height: 24,
+                    child: CircularProgressIndicator(
+                      strokeWidth: 2.5,
+                      valueColor: AlwaysStoppedAnimation<Color>(Colors.white),
+                    ),
+                  )
+                : const Text(
+                    'Save',
+                    style: TextStyle(
+                      fontSize: 18,
+                      fontWeight: FontWeight.w600,
+                    ),
+                  ),
+          ),
+        ),
+      ),
+    );
+  }
+
+  /// Shows date picker dialog for selecting expense date
+  Future<void> _selectDate(BuildContext context) async {
     final date = await showDatePicker(
       context: context,
       initialDate: _cubit.state.data.selectedDate,
       firstDate: DateTime(2020),
       lastDate: DateTime.now(),
+      builder: (context, child) {
+        return Theme(
+          data: Theme.of(context).copyWith(
+            colorScheme: const ColorScheme.light(
+              primary: _primaryColor,
+              onPrimary: Colors.white,
+              onSurface: _textColor,
+            ),
+          ),
+          child: child!,
+        );
+      },
     );
 
     if (date != null) {
@@ -359,24 +415,41 @@ class _AddExpenseScreenState extends State<AddExpenseScreen> {
     }
   }
 
-  void _pickReceipt() async {
+  /// Shows dialog to pick receipt image from camera or gallery
+  Future<void> _pickReceipt() async {
     final picker = ImagePicker();
     final source = await showDialog<ImageSource>(
       context: context,
       builder: (context) => AlertDialog(
-        title: const Text('Select Receipt'),
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(16),
+        ),
+        title: const Text(
+          'Select Receipt',
+          style: TextStyle(
+            fontWeight: FontWeight.bold,
+            color: _textColor,
+          ),
+        ),
         content: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
             ListTile(
-              leading: const Icon(Icons.camera_alt),
+              leading: const Icon(Icons.camera_alt, color: _primaryColor),
               title: const Text('Camera'),
               onTap: () => Navigator.pop(context, ImageSource.camera),
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(8),
+              ),
             ),
+            const SizedBox(height: 8),
             ListTile(
-              leading: const Icon(Icons.photo_library),
+              leading: const Icon(Icons.photo_library, color: _primaryColor),
               title: const Text('Gallery'),
               onTap: () => Navigator.pop(context, ImageSource.gallery),
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(8),
+              ),
             ),
           ],
         ),
@@ -391,17 +464,37 @@ class _AddExpenseScreenState extends State<AddExpenseScreen> {
     }
   }
 
-  void _saveExpense() async {
+  /// Validates and saves the expense
+  Future<void> _saveExpense() async {
     if (!_formKey.currentState!.validate()) return;
 
     if (_cubit.state.data.category.isEmpty) {
       ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('Please select a category')),
+        SnackBar(
+          content: const Text('Please select a category'),
+          backgroundColor: Colors.red.shade400,
+          behavior: SnackBarBehavior.floating,
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(8),
+          ),
+        ),
       );
       return;
     }
 
     final success = await _cubit.saveExpense(context);
-
+    
+    if (success && mounted) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: const Text('Expense saved successfully!'),
+          backgroundColor: Colors.green.shade400,
+          behavior: SnackBarBehavior.floating,
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(8),
+          ),
+        ),
+      );
+    }
   }
 }
