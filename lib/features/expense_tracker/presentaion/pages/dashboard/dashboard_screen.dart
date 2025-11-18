@@ -1,5 +1,5 @@
 import 'package:expense_tracker/core/bloc/generic_cubit/generic_cubit.dart';
-import 'package:expense_tracker/core/theme/colors/app_colors.dart';
+import 'package:expense_tracker/core/theme/colors/colors_extension.dart';
 import 'package:expense_tracker/features/expense_tracker/data/model/expense_model/expense_model.dart';
 import 'package:expense_tracker/features/expense_tracker/domain/entity/expense_entity/expense_entity.dart';
 import 'package:expense_tracker/features/expense_tracker/domain/entity/expense_filter_entity/expense_filter_entity.dart';
@@ -240,7 +240,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
         ),
         floatingActionButton: FloatingActionButton(
           onPressed: () => _navigateToAddExpense(context),
-          backgroundColor: AppColors.of(context).primary,
+          backgroundColor: context.colors.primary,
           child: const Icon(Icons.add, color: Colors.white),
         ),
       ),

@@ -113,7 +113,7 @@ class _SplashScreenState extends State<SplashScreen>
                 child: Text(
                   'Expenset.',
                   style: TextStyle(
-                    color: AppColors.of(context).primary,
+                    color: AppColors.fixedColors.primary,
                     fontSize: 48,
                     fontWeight: FontWeight.bold,
                     letterSpacing: -1,

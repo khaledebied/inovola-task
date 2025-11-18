@@ -1,5 +1,5 @@
 import 'package:expense_tracker/core/bloc/generic_cubit/generic_cubit.dart';
-import 'package:expense_tracker/core/theme/colors/app_colors.dart';
+import 'package:expense_tracker/core/theme/colors/colors_extension.dart';
 import 'package:expense_tracker/features/expense_tracker/presentaion/pages/dashboard/dashboard_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -70,7 +70,7 @@ class _LoginScreenState extends State<LoginScreen> {
                       style: TextStyle(
                         fontSize: 32,
                         fontWeight: FontWeight.bold,
-                        color: AppColors.of(context).primary,
+                        color: context.colors.primary,
                       ),
                     ),
                     const SizedBox(height: 80),
@@ -156,7 +156,7 @@ class _LoginScreenState extends State<LoginScreen> {
             ),
             focusedBorder: OutlineInputBorder(
               borderRadius: BorderRadius.circular(12),
-              borderSide: BorderSide(color: AppColors.of(context).primary),
+              borderSide: BorderSide(color: context.colors.primary),
             ),
             errorBorder: OutlineInputBorder(
               borderRadius: BorderRadius.circular(12),
@@ -228,7 +228,7 @@ class _LoginScreenState extends State<LoginScreen> {
             ),
             focusedBorder: OutlineInputBorder(
               borderRadius: BorderRadius.circular(12),
-              borderSide: BorderSide(color: AppColors.of(context).primary),
+              borderSide: BorderSide(color: context.colors.primary),
             ),
             errorBorder: OutlineInputBorder(
               borderRadius: BorderRadius.circular(12),
@@ -278,7 +278,7 @@ class _LoginScreenState extends State<LoginScreen> {
         child: Text(
           'Forget Password',
           style: TextStyle(
-            color: AppColors.of(context).primary,
+            color: context.colors.primary,
             fontSize: 14,
             fontWeight: FontWeight.w500,
           ),
@@ -294,7 +294,7 @@ class _LoginScreenState extends State<LoginScreen> {
       child: ElevatedButton(
         onPressed: data.isLoading ? null : _handleLogin,
         style: ElevatedButton.styleFrom(
-          backgroundColor: AppColors.of(context).primary,
+          backgroundColor: context.colors.primary,
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(12),
           ),
@@ -457,7 +457,7 @@ class _LoginScreenState extends State<LoginScreen> {
             child: Text(
               'Sign Up',
               style: TextStyle(
-                color: AppColors.of(context).primary,
+                color: context.colors.primary,
                 fontSize: 14,
                 fontWeight: FontWeight.w600,
               ),
