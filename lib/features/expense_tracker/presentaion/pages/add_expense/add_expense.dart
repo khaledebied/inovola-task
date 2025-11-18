@@ -2,7 +2,6 @@ import 'dart:io';
 import 'package:expense_tracker/core/bloc/generic_cubit/generic_cubit.dart';
 import 'package:expense_tracker/features/expense_tracker/presentaion/manager/add_expense_cubit/add_expense_cubit.dart';
 import 'package:expense_tracker/features/expense_tracker/presentaion/pages/expense_tracker_screen/widgets/category_selection_grid.dart';
-import 'package:expense_tracker/features/expense_tracker/presentaion/pages/expense_tracker_screen/widgets/currency_dropdown.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:image_picker/image_picker.dart';
@@ -186,37 +185,32 @@ class _AddExpenseScreenState extends State<AddExpenseScreen> {
 
   /// Builds the amount input field with currency selector and conversion
   Widget _buildAmountSection(AddExpenseData data) {
-    return Container(
-      padding: const EdgeInsets.all(20),
-      decoration: BoxDecoration(
-        color: Colors.white,
-        borderRadius: BorderRadius.circular(16),
-        boxShadow: [
-          BoxShadow(
-            color: Colors.black.withOpacity(0.05),
-            blurRadius: 10,
-            offset: const Offset(0, 2),
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Container(
+          padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+          decoration: BoxDecoration(
+            color: _inputBackgroundColor,
+            borderRadius: BorderRadius.circular(_borderRadius),
+            border: Border.all(color: Colors.grey.shade300, width: 1),
           ),
-        ],
-      ),
-      child: Column(
-        children: [
-          Row(
+          child: Row(
             children: [
               Expanded(
-                flex: 2,
                 child: TextFormField(
                   controller: _amountController,
                   keyboardType: const TextInputType.numberWithOptions(decimal: true),
                   style: const TextStyle(
-                    fontSize: 20,
-                    fontWeight: FontWeight.bold,
-                    color: Color(0xFF2D3436),
+                    fontSize: 16,
+                    color: _textColor,
                   ),
                   decoration: const InputDecoration(
                     hintText: '0.00',
+                    hintStyle: TextStyle(color: _hintColor),
                     border: InputBorder.none,
-                    contentPadding: EdgeInsets.symmetric(horizontal: 10, vertical: 10),
+                    contentPadding: EdgeInsets.zero,
+                    isDense: true,
                   ),
                   validator: (value) {
                     if (value == null || value.isEmpty) {
@@ -233,26 +227,62 @@ class _AddExpenseScreenState extends State<AddExpenseScreen> {
                   },
                 ),
               ),
-              const SizedBox(width: 16),
-              CurrencyDropdown(
-                currencies: data.availableCurrencies,
-                selectedCurrency: data.currency,
-                onCurrencyChanged: _cubit.updateCurrency,
-              ),
+              const SizedBox(width: 12),
+              _buildCurrencyDropdown(data),
             ],
           ),
-          if (data.convertedAmount != null && data.currency != 'USD')
-            Padding(
-              padding: const EdgeInsets.only(top: 12),
-              child: Text(
-                '≈ \$${data.convertedAmount!.toStringAsFixed(2)} USD',
-                style: TextStyle(
-                  fontSize: 16,
-                  color: Colors.grey[600],
-                ),
+        ),
+        if (data.convertedAmount != null && data.currency != 'USD')
+          Padding(
+            padding: const EdgeInsets.only(top: 8, left: 16),
+            child: Text(
+              '≈ \$${data.convertedAmount!.toStringAsFixed(2)} USD',
+              style: const TextStyle(
+                fontSize: 14,
+                color: _hintColor,
               ),
             ),
-        ],
+          ),
+      ],
+    );
+  }
+
+  /// Builds a styled currency dropdown that matches the app's design
+  Widget _buildCurrencyDropdown(AddExpenseData data) {
+    return Container(
+      padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
+      decoration: BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.circular(8),
+        border: Border.all(color: Colors.grey.shade300, width: 1),
+      ),
+      child: DropdownButtonHideUnderline(
+        child: DropdownButton<String>(
+          value: data.currency,
+          icon: const Icon(
+            Icons.keyboard_arrow_down,
+            color: _textColor,
+            size: 18,
+          ),
+          style: const TextStyle(
+            color: _textColor,
+            fontSize: 16,
+            fontWeight: FontWeight.w600,
+          ),
+          dropdownColor: Colors.white,
+          isDense: true,
+          items: data.availableCurrencies.map((currency) {
+            return DropdownMenuItem<String>(
+              value: currency,
+              child: Text(currency),
+            );
+          }).toList(),
+          onChanged: (value) {
+            if (value != null) {
+              _cubit.updateCurrency(value);
+            }
+          },
+        ),
       ),
     );
   }
