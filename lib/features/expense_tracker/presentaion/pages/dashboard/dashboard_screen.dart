@@ -3,7 +3,6 @@ import 'package:expense_tracker/features/expense_tracker/domain/entity/expense_f
 import 'package:expense_tracker/features/expense_tracker/presentaion/manager/dashboard_cubit/dashboard_expense_cubit.dart';
 import 'package:expense_tracker/features/expense_tracker/presentaion/manager/expense_filter_cubit/expense_filter_cubit.dart';
 import 'package:expense_tracker/features/expense_tracker/presentaion/pages/add_expense/add_expense.dart';
-import 'package:expense_tracker/features/expense_tracker/presentaion/pages/dashboard/widgets/coming_soon_page.dart';
 import 'package:expense_tracker/features/expense_tracker/presentaion/pages/dashboard/widgets/dashboard_bottom_navigation.dart';
 import 'package:expense_tracker/features/expense_tracker/presentaion/pages/dashboard/widgets/dashboard_empty_state.dart';
 import 'package:expense_tracker/features/expense_tracker/presentaion/pages/dashboard/widgets/dashboard_expense_item.dart';
@@ -26,6 +25,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
   late DashboardExpenseCubit _dashboardCubit;
   late ExpenseFilterCubit _filterCubit;
   final ScrollController _scrollController = ScrollController();
+  int _currentTabIndex = 0;
 
   @override
   void initState() {
@@ -50,6 +50,12 @@ class _DashboardScreenState extends State<DashboardScreen> {
     }
   }
 
+  void _onTabChanged(int index) {
+    setState(() {
+      _currentTabIndex = index;
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return MultiBlocProvider(
@@ -64,64 +70,25 @@ class _DashboardScreenState extends State<DashboardScreen> {
         ),
         child: Scaffold(
           backgroundColor: const Color(0xFFF5F5F5),
-          body: RefreshIndicator(
-            onRefresh: () async => _dashboardCubit.refreshData(),
-            child: BlocBuilder<DashboardExpenseCubit,
-                GenericState<DashboardExpenseData>>(
-              builder: (context, state) {
-                return CustomScrollView(
-                  controller: _scrollController,
-                  slivers: [
-                    // Header with gradient background and balance card
-                    SliverToBoxAdapter(
-                      child: DashboardHeaderSection(
-                        onMonthFilterTap: () => _showFilterBottomSheet(context),
-                      ),
-                    ),
-
-                    // Recent expenses section header
-                    const SliverPadding(
-                      padding: EdgeInsets.fromLTRB(20, 70, 20, 16),
-                      sliver: SliverToBoxAdapter(
-                        child: RecentExpensesHeader(),
-                      ),
-                    ),
-
-                    // Expenses list
-                    if (state.data.isLoading && state.data.expenses.data.isEmpty)
-                      const SliverFillRemaining(
-                        child: Center(child: CircularProgressIndicator()),
-                      )
-                    else if (state.data.expenses.data.isEmpty)
-                      const SliverFillRemaining(child: DashboardEmptyState())
-                    else
-                      SliverPadding(
-                        padding: const EdgeInsets.symmetric(horizontal: 20),
-                        sliver: SliverList(
-                          delegate: SliverChildBuilderDelegate(
-                            (context, index) {
-                              final expense = state.data.expenses.data[index];
-                              return DashboardExpenseItem(expense: expense);
-                            },
-                            childCount: state.data.expenses.data.length,
-                          ),
-                        ),
-                      ),
-
-                    // Bottom padding for navigation bar
-                    const SliverPadding(
-                      padding: EdgeInsets.only(bottom: 100),
-                    ),
-                  ],
-                );
-              },
-            ),
+          body: IndexedStack(
+            index: _currentTabIndex,
+            children: [
+              // Tab 0: Home
+              _buildHomeTab(),
+              // Tab 1: Stats
+              _buildComingSoonTab(),
+              // Tab 2: Cards
+              _buildComingSoonTab(),
+              // Tab 3: Profile
+              _buildComingSoonTab(),
+            ],
           ),
           bottomNavigationBar: DashboardBottomNavigation(
-            onHomeTap: null, // Already on home screen
-            onStatsTap: () => _navigateToComingSoon(context),
-            onCardsTap: () => _navigateToComingSoon(context),
-            onProfileTap: () => _navigateToComingSoon(context),
+            currentIndex: _currentTabIndex,
+            onHomeTap: () => _onTabChanged(0),
+            onStatsTap: () => _onTabChanged(1),
+            onCardsTap: () => _onTabChanged(2),
+            onProfileTap: () => _onTabChanged(3),
           ),
           floatingActionButton: DashboardFab(
             onPressed: () => _navigateToAddExpense(context),
@@ -150,6 +117,118 @@ class _DashboardScreenState extends State<DashboardScreen> {
     );
   }
 
+  Widget _buildHomeTab() {
+    return RefreshIndicator(
+      onRefresh: () async => _dashboardCubit.refreshData(),
+      child: BlocBuilder<DashboardExpenseCubit,
+          GenericState<DashboardExpenseData>>(
+        builder: (context, state) {
+          return CustomScrollView(
+            controller: _scrollController,
+            slivers: [
+              // Header with gradient background and balance card
+              SliverToBoxAdapter(
+                child: DashboardHeaderSection(
+                  onMonthFilterTap: () => _showFilterBottomSheet(context),
+                ),
+              ),
+
+              // Recent expenses section header
+              const SliverPadding(
+                padding: EdgeInsets.fromLTRB(20, 70, 20, 16),
+                sliver: SliverToBoxAdapter(
+                  child: RecentExpensesHeader(),
+                ),
+              ),
+
+              // Expenses list
+              if (state.data.isLoading && state.data.expenses.data.isEmpty)
+                const SliverFillRemaining(
+                  child: Center(child: CircularProgressIndicator()),
+                )
+              else if (state.data.expenses.data.isEmpty)
+                const SliverFillRemaining(child: DashboardEmptyState())
+              else
+                SliverPadding(
+                  padding: const EdgeInsets.symmetric(horizontal: 20),
+                  sliver: SliverList(
+                    delegate: SliverChildBuilderDelegate(
+                      (context, index) {
+                        final expense = state.data.expenses.data[index];
+                        return DashboardExpenseItem(expense: expense);
+                      },
+                      childCount: state.data.expenses.data.length,
+                    ),
+                  ),
+                ),
+
+              // Bottom padding for navigation bar
+              const SliverPadding(
+                padding: EdgeInsets.only(bottom: 100),
+              ),
+            ],
+          );
+        },
+      ),
+    );
+  }
+
+  Widget _buildComingSoonTab() {
+    return Center(
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          Container(
+            width: 120,
+            height: 120,
+            decoration: BoxDecoration(
+              shape: BoxShape.circle,
+              gradient: const LinearGradient(
+                colors: [Color(0xFF4C6FFF), Color(0xFF6E8AFF)],
+                begin: Alignment.topLeft,
+                end: Alignment.bottomRight,
+              ),
+              boxShadow: [
+                BoxShadow(
+                  color: const Color(0xFF4C6FFF).withOpacity(0.3),
+                  blurRadius: 20,
+                  offset: const Offset(0, 10),
+                ),
+              ],
+            ),
+            child: const Icon(
+              Icons.rocket_launch_rounded,
+              size: 60,
+              color: Colors.white,
+            ),
+          ),
+          const SizedBox(height: 32),
+          const Text(
+            'Coming Soon',
+            style: TextStyle(
+              fontSize: 28,
+              fontWeight: FontWeight.bold,
+              color: Color(0xFF2D3142),
+            ),
+          ),
+          const SizedBox(height: 12),
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 40),
+            child: Text(
+              'This feature is under development.\nStay tuned!',
+              textAlign: TextAlign.center,
+              style: TextStyle(
+                fontSize: 16,
+                color: Colors.grey[600],
+                height: 1.5,
+              ),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
   void _navigateToAddExpense(BuildContext context) async {
     final result = await Navigator.of(context).push(
       MaterialPageRoute(builder: (_) => const AddExpenseScreen()),
@@ -158,13 +237,5 @@ class _DashboardScreenState extends State<DashboardScreen> {
     if (result != null) {
       _dashboardCubit.addNewExpense(result);
     }
-  }
-
-  void _navigateToComingSoon(BuildContext context) {
-    Navigator.of(context).push(
-      MaterialPageRoute(
-        builder: (_) => const ComingSoonPage(),
-      ),
-    );
   }
 }

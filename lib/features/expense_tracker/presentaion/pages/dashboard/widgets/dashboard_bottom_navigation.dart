@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 class DashboardBottomNavigation extends StatelessWidget {
+  final int currentIndex;
   final VoidCallback? onHomeTap;
   final VoidCallback? onStatsTap;
   final VoidCallback? onCardsTap;
@@ -8,6 +9,7 @@ class DashboardBottomNavigation extends StatelessWidget {
 
   const DashboardBottomNavigation({
     Key? key,
+    this.currentIndex = 0,
     this.onHomeTap,
     this.onStatsTap,
     this.onCardsTap,
@@ -31,11 +33,11 @@ class DashboardBottomNavigation extends StatelessWidget {
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceAround,
         children: [
-          _buildNavItem(Icons.home_rounded, true, onHomeTap),
-          _buildNavItem(Icons.bar_chart_rounded, false, onStatsTap),
+          _buildNavItem(Icons.home_rounded, currentIndex == 0, onHomeTap),
+          _buildNavItem(Icons.bar_chart_rounded, currentIndex == 1, onStatsTap),
           const SizedBox(width: 64), // Space for FAB
-          _buildNavItem(Icons.credit_card_rounded, false, onCardsTap),
-          _buildNavItem(Icons.person_rounded, false, onProfileTap),
+          _buildNavItem(Icons.credit_card_rounded, currentIndex == 2, onCardsTap),
+          _buildNavItem(Icons.person_rounded, currentIndex == 3, onProfileTap),
         ],
       ),
     );
