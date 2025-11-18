@@ -3,6 +3,7 @@ import 'package:expense_tracker/features/expense_tracker/domain/entity/expense_f
 import 'package:expense_tracker/features/expense_tracker/presentaion/manager/dashboard_cubit/dashboard_expense_cubit.dart';
 import 'package:expense_tracker/features/expense_tracker/presentaion/manager/expense_filter_cubit/expense_filter_cubit.dart';
 import 'package:expense_tracker/features/expense_tracker/presentaion/pages/add_expense/add_expense.dart';
+import 'package:expense_tracker/features/expense_tracker/presentaion/pages/dashboard/widgets/coming_soon_page.dart';
 import 'package:expense_tracker/features/expense_tracker/presentaion/pages/dashboard/widgets/dashboard_bottom_navigation.dart';
 import 'package:expense_tracker/features/expense_tracker/presentaion/pages/dashboard/widgets/dashboard_empty_state.dart';
 import 'package:expense_tracker/features/expense_tracker/presentaion/pages/dashboard/widgets/dashboard_expense_item.dart';
@@ -116,7 +117,12 @@ class _DashboardScreenState extends State<DashboardScreen> {
               },
             ),
           ),
-          bottomNavigationBar: const DashboardBottomNavigation(),
+          bottomNavigationBar: DashboardBottomNavigation(
+            onHomeTap: null, // Already on home screen
+            onStatsTap: () => _navigateToComingSoon(context),
+            onCardsTap: () => _navigateToComingSoon(context),
+            onProfileTap: () => _navigateToComingSoon(context),
+          ),
           floatingActionButton: DashboardFab(
             onPressed: () => _navigateToAddExpense(context),
           ),
@@ -152,5 +158,13 @@ class _DashboardScreenState extends State<DashboardScreen> {
     if (result != null) {
       _dashboardCubit.addNewExpense(result);
     }
+  }
+
+  void _navigateToComingSoon(BuildContext context) {
+    Navigator.of(context).push(
+      MaterialPageRoute(
+        builder: (_) => const ComingSoonPage(),
+      ),
+    );
   }
 }
