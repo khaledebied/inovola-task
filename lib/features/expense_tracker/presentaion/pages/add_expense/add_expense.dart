@@ -84,6 +84,12 @@ class _AddExpenseScreenState extends State<AddExpenseScreen> {
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
+                          // Category Dropdown
+                          _buildSectionTitle('Categories'),
+                          const SizedBox(height: _itemSpacing),
+                          _buildCategoryDropdown(state.data),
+                          const SizedBox(height: _sectionSpacing),
+
                           // Amount Field
                           _buildSectionTitle('Amount & Currency'),
                           const SizedBox(height: _itemSpacing),
@@ -135,6 +141,44 @@ class _AddExpenseScreenState extends State<AddExpenseScreen> {
         fontSize: 16,
         fontWeight: FontWeight.w600,
         color: _textColor,
+      ),
+    );
+  }
+
+  /// Builds the category dropdown selector
+  Widget _buildCategoryDropdown(AddExpenseData data) {
+    return Container(
+      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 4),
+      decoration: BoxDecoration(
+        color: _inputBackgroundColor,
+        borderRadius: BorderRadius.circular(_borderRadius),
+        border: Border.all(color: Colors.grey.shade300, width: 1),
+      ),
+      child: DropdownButtonHideUnderline(
+        child: DropdownButton<String>(
+          isExpanded: true,
+          value: data.category.isEmpty ? null : data.category,
+          hint: const Text(
+            'Select Category',
+            style: TextStyle(color: _hintColor, fontSize: 16),
+          ),
+          icon: const Icon(Icons.keyboard_arrow_down, color: _textColor),
+          style: const TextStyle(
+            color: _textColor,
+            fontSize: 16,
+          ),
+          items: data.availableCategories.map((String category) {
+            return DropdownMenuItem<String>(
+              value: category,
+              child: Text(category),
+            );
+          }).toList(),
+          onChanged: (String? newValue) {
+            if (newValue != null) {
+              _cubit.updateCategory(newValue);
+            }
+          },
+        ),
       ),
     );
   }
