@@ -62,7 +62,7 @@ class MyApp extends StatelessWidget {
     return MultiBlocProvider(
       providers: GeneralProviders.instance.providers(context),
       child: MaterialApp(
-        title: 'Expense Tracker',
+        title: 'Expenset',
         debugShowCheckedModeBanner: false,
         theme: AppTheme.lightTheme,
         home: const SplashScreen(),

@@ -12,6 +12,6 @@ class ApplicationConstants {
   static const paginationLimit = 16;
   static const paginationSkip = 0;
 
-  static const logoVarName = 'foz_logo';
-  static String logoPathPng = "assets/images/${ApplicationConstants.logoVarName}.png";
+  static const logoVarName = 'icon';
+  static String logoPathPng = "assets/images/${ApplicationConstants.logoVarName}.jpg";
 }

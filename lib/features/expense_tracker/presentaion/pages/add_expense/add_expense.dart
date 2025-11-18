@@ -211,7 +211,12 @@ class _AddExpenseScreenState extends State<AddExpenseScreen> {
                     border: InputBorder.none,
                     contentPadding: EdgeInsets.zero,
                     isDense: true,
+                    fillColor: Colors.transparent,
+                    focusColor: Colors.transparent,
+                    enabledBorder: InputBorder.none,
+                    focusedBorder: InputBorder.none,
                   ),
+
                   validator: (value) {
                     if (value == null || value.isEmpty) {
                       return 'Please enter an amount';
@@ -239,7 +244,7 @@ class _AddExpenseScreenState extends State<AddExpenseScreen> {
               '≈ \$${data.convertedAmount!.toStringAsFixed(2)} USD',
               style: const TextStyle(
                 fontSize: 14,
-                color: _hintColor,
+                color: _primaryColor,
               ),
             ),
           ),
