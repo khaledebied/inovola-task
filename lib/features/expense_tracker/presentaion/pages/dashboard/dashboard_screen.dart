@@ -8,6 +8,7 @@ import 'package:expense_tracker/features/expense_tracker/presentaion/manager/exp
 import 'package:expense_tracker/features/expense_tracker/presentaion/pages/add_expense/add_expense.dart';
 import 'package:expense_tracker/features/expense_tracker/presentaion/pages/expense_tracker_screen/widgets/filter_bottom_sheet.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 class DashboardScreen extends StatefulWidget {
@@ -51,246 +52,414 @@ class _DashboardScreenState extends State<DashboardScreen> {
         BlocProvider.value(value: _dashboardCubit),
         BlocProvider.value(value: _filterCubit),
       ],
-      child: Scaffold(
-        backgroundColor: Colors.white,
-        body: RefreshIndicator(
-          onRefresh: () async => _dashboardCubit.refreshData(),
-          child: BlocBuilder<DashboardExpenseCubit, GenericState<DashboardExpenseData>>(
-            builder: (context, state) {
-              return CustomScrollView(
-                controller: _scrollController,
-                slivers: [
-                  SliverAppBar(
-                    expandedHeight: 292,
-                    floating: false,
-                    pinned: false,
-                    flexibleSpace: FlexibleSpaceBar(
-                      background: Stack(
-                        clipBehavior: Clip.none,
-                        children: [
-                          // Blue background
-                          Container(
-                            decoration: const BoxDecoration(
-                              color: Colors.white,
-                              gradient: LinearGradient(
-                                colors: [Color(0xFF0077FF), Color(0xFFFFFFFF)],
-                                begin: Alignment.topCenter,
-                                end: Alignment.bottomCenter,
-                              ),
-                            ),
+      child: AnnotatedRegion<SystemUiOverlayStyle>(
+        value: const SystemUiOverlayStyle(
+          statusBarColor: Colors.transparent,
+          statusBarIconBrightness: Brightness.light,
+        ),
+        child: Scaffold(
+          backgroundColor: const Color(0xFFF5F5F5),
+          body: RefreshIndicator(
+            onRefresh: () async => _dashboardCubit.refreshData(),
+            child: BlocBuilder<DashboardExpenseCubit, GenericState<DashboardExpenseData>>(
+              builder: (context, state) {
+                return CustomScrollView(
+                  controller: _scrollController,
+                  slivers: [
+                    // Header with gradient background
+                    SliverToBoxAdapter(
+                      child: Container(
+                        height: 360,
+                        decoration: const BoxDecoration(
+                          gradient: LinearGradient(
+                            colors: [Color(0xFF4C6FFF), Color(0xFF6E8AFF)],
+                            begin: Alignment.topLeft,
+                            end: Alignment.bottomRight,
                           ),
-
-                          // Content
-                          Padding(
-                            padding: const EdgeInsets.fromLTRB(20, 60, 20, 20),
-                            child: SizedBox(
-                              child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  // User info
-                                  const Column(
-                                    crossAxisAlignment: CrossAxisAlignment.start,
-                                    children: [
-                                      Text(
-                                        'Good Morning',
-                                        style: TextStyle(color: Colors.white70, fontSize: 14),
-                                      ),
-                                      SizedBox(height: 4),
-                                      Text(
-                                        'Shihab Rahman',
-                                        style: TextStyle(
-                                          fontSize: 20,
-                                          fontWeight: FontWeight.bold,
-                                          color: Colors.white,
+                          borderRadius: BorderRadius.only(
+                            bottomLeft: Radius.circular(32),
+                            bottomRight: Radius.circular(32),
+                          ),
+                        ),
+                        child: SafeArea(
+                          child: Padding(
+                            padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 16),
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                // Top row: Profile pic and dropdown
+                                Row(
+                                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                  children: [
+                                    Row(
+                                      children: [
+                                        // Profile picture
+                                        Container(
+                                          width: 52,
+                                          height: 52,
+                                          decoration: BoxDecoration(
+                                            shape: BoxShape.circle,
+                                            border: Border.all(color: Colors.white.withOpacity(0.3), width: 2),
+                                            image: const DecorationImage(
+                                              image: NetworkImage('https://i.pravatar.cc/150?img=1'),
+                                              fit: BoxFit.cover,
+                                            ),
+                                          ),
                                         ),
-                                      ),
-                                    ],
-                                  ),
-                                  const Spacer(),
-
-                                  // White card with balance info
-                                  Transform.translate(
-                                    offset: const Offset(0, 10),
-                                    child: Container(
-                                      padding: const EdgeInsets.all(20),
+                                        const SizedBox(width: 12),
+                                        // Greeting
+                                        const Column(
+                                          crossAxisAlignment: CrossAxisAlignment.start,
+                                          children: [
+                                            Text(
+                                              'Good Morning',
+                                              style: TextStyle(
+                                                color: Colors.white,
+                                                fontSize: 14,
+                                                fontWeight: FontWeight.w400,
+                                              ),
+                                            ),
+                                            SizedBox(height: 2),
+                                            Text(
+                                              'Shihab Rahman',
+                                              style: TextStyle(
+                                                fontSize: 20,
+                                                fontWeight: FontWeight.bold,
+                                                color: Colors.white,
+                                              ),
+                                            ),
+                                          ],
+                                        ),
+                                      ],
+                                    ),
+                                    // This month dropdown
+                                    Container(
+                                      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
                                       decoration: BoxDecoration(
-                                        color: Colors.blueAccent,
-                                        borderRadius: BorderRadius.circular(16),
-                                        boxShadow: [
-                                          BoxShadow(
-                                            color: Colors.black.withOpacity(0.1),
-                                            blurRadius: 10,
-                                            offset: const Offset(0, 5),
-                                          )
-                                        ],
+                                        color: Colors.white,
+                                        borderRadius: BorderRadius.circular(20),
                                       ),
-                                      child: Column(
-                                        crossAxisAlignment: CrossAxisAlignment.start,
+                                      child: Row(
                                         children: [
-                                          const Text(
-                                            'Total Balance',
+                                          Text(
+                                            'This month',
                                             style: TextStyle(
-                                              color: Colors.white,
-                                              fontSize: 14,
+                                              color: const Color(0xFF4C6FFF),
+                                              fontSize: 12,
+                                              fontWeight: FontWeight.w600,
                                             ),
                                           ),
-                                          const SizedBox(height: 8),
-                                          const Text(
-                                            '\$ 2,548.00',
-                                            style: TextStyle(
-                                              fontSize: 28,
-                                              color: Colors.white,
-                                              fontWeight: FontWeight.bold,
-                                            ),
-                                          ),
-                                          const SizedBox(height: 20),
-                                          Row(
-                                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                            children: [
-                                              _buildBalanceInfoCard(
-                                                title: 'Income',
-                                                amount: '\$ 10,840.00',
-                                                color: Colors.green,
-                                              ),
-                                              _buildBalanceInfoCard(
-                                                title: 'Expenses',
-                                                amount: '\$ 1,884.00',
-                                                color: Colors.red,
-                                              ),
-                                            ],
+                                          const SizedBox(width: 4),
+                                          Icon(
+                                            Icons.keyboard_arrow_down,
+                                            color: const Color(0xFF4C6FFF),
+                                            size: 18,
                                           ),
                                         ],
                                       ),
                                     ),
+                                  ],
+                                ),
+                                const SizedBox(height: 24),
+                                // Balance card
+                                Container(
+                                  width: double.infinity,
+                                  padding: const EdgeInsets.all(20),
+                                  decoration: BoxDecoration(
+                                    gradient: const LinearGradient(
+                                      colors: [Color(0xFF5B7DFF), Color(0xFF3B5CFF)],
+                                      begin: Alignment.topLeft,
+                                      end: Alignment.bottomRight,
+                                    ),
+                                    borderRadius: BorderRadius.circular(24),
+                                    boxShadow: [
+                                      BoxShadow(
+                                        color: const Color(0xFF4C6FFF).withOpacity(0.4),
+                                        blurRadius: 20,
+                                        offset: const Offset(0, 10),
+                                      ),
+                                    ],
                                   ),
-                                ],
-                              ),
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-                  ),
-
-                  // Recent expenses section
-                  SliverPadding(
-                    padding: const EdgeInsets.only(top: 20, left: 20, right: 20),
-                    sliver: SliverToBoxAdapter(
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          const Text(
-                            'Recent Expenses',
-                            style: TextStyle(
-                              fontSize: 18,
-                              fontWeight: FontWeight.bold,
-                            ),
-                          ),
-                          TextButton(
-                            onPressed: () {
-                              showModalBottomSheet(
-                                context: context,
-                                isScrollControlled: true,
-                                backgroundColor: Colors.transparent,
-                                builder: (_) => BlocProvider.value(
-                                  value: _filterCubit,
-                                  child: FilterBottomSheet(
-                                    onApply: (filter) {
-                                      _dashboardCubit.loadInitialData(filter: filter);
-                                      Navigator.of(context).pop();
-                                    },
+                                  child: Column(
+                                    crossAxisAlignment: CrossAxisAlignment.start,
+                                    children: [
+                                      Row(
+                                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                        children: [
+                                          Row(
+                                            children: [
+                                              const Text(
+                                                'Total Balance',
+                                                style: TextStyle(
+                                                  color: Colors.white,
+                                                  fontSize: 14,
+                                                  fontWeight: FontWeight.w400,
+                                                ),
+                                              ),
+                                              const SizedBox(width: 6),
+                                              Icon(
+                                                Icons.arrow_upward_rounded,
+                                                color: Colors.white.withOpacity(0.8),
+                                                size: 16,
+                                              ),
+                                            ],
+                                          ),
+                                          Icon(
+                                            Icons.more_horiz,
+                                            color: Colors.white.withOpacity(0.8),
+                                            size: 24,
+                                          ),
+                                        ],
+                                      ),
+                                      const SizedBox(height: 8),
+                                      const Text(
+                                        '\$ 2,548.00',
+                                        style: TextStyle(
+                                          fontSize: 36,
+                                          color: Colors.white,
+                                          fontWeight: FontWeight.bold,
+                                        ),
+                                      ),
+                                      const SizedBox(height: 24),
+                                      Row(
+                                        children: [
+                                          Expanded(
+                                            child: Container(
+                                              padding: const EdgeInsets.all(16),
+                                              decoration: BoxDecoration(
+                                                color: Colors.white.withOpacity(0.2),
+                                                borderRadius: BorderRadius.circular(16),
+                                              ),
+                                              child: Row(
+                                                children: [
+                                                  Container(
+                                                    padding: const EdgeInsets.all(8),
+                                                    decoration: BoxDecoration(
+                                                      color: Colors.white.withOpacity(0.3),
+                                                      borderRadius: BorderRadius.circular(8),
+                                                    ),
+                                                    child: const Icon(
+                                                      Icons.arrow_downward_rounded,
+                                                      color: Colors.white,
+                                                      size: 16,
+                                                    ),
+                                                  ),
+                                                  const SizedBox(width: 12),
+                                                  const Column(
+                                                    crossAxisAlignment: CrossAxisAlignment.start,
+                                                    children: [
+                                                      Text(
+                                                        'Income',
+                                                        style: TextStyle(
+                                                          color: Colors.white,
+                                                          fontSize: 12,
+                                                          fontWeight: FontWeight.w400,
+                                                        ),
+                                                      ),
+                                                      SizedBox(height: 4),
+                                                      Text(
+                                                        '\$ 10,840.00',
+                                                        style: TextStyle(
+                                                          color: Colors.white,
+                                                          fontSize: 16,
+                                                          fontWeight: FontWeight.bold,
+                                                        ),
+                                                      ),
+                                                    ],
+                                                  ),
+                                                ],
+                                              ),
+                                            ),
+                                          ),
+                                          const SizedBox(width: 12),
+                                          Expanded(
+                                            child: Container(
+                                              padding: const EdgeInsets.all(16),
+                                              decoration: BoxDecoration(
+                                                color: Colors.white.withOpacity(0.2),
+                                                borderRadius: BorderRadius.circular(16),
+                                              ),
+                                              child: Row(
+                                                children: [
+                                                  Container(
+                                                    padding: const EdgeInsets.all(8),
+                                                    decoration: BoxDecoration(
+                                                      color: Colors.white.withOpacity(0.3),
+                                                      borderRadius: BorderRadius.circular(8),
+                                                    ),
+                                                    child: const Icon(
+                                                      Icons.arrow_upward_rounded,
+                                                      color: Colors.white,
+                                                      size: 16,
+                                                    ),
+                                                  ),
+                                                  const SizedBox(width: 12),
+                                                  const Column(
+                                                    crossAxisAlignment: CrossAxisAlignment.start,
+                                                    children: [
+                                                      Text(
+                                                        'Expenses',
+                                                        style: TextStyle(
+                                                          color: Colors.white,
+                                                          fontSize: 12,
+                                                          fontWeight: FontWeight.w400,
+                                                        ),
+                                                      ),
+                                                      SizedBox(height: 4),
+                                                      Text(
+                                                        '\$ 1,884.00',
+                                                        style: TextStyle(
+                                                          color: Colors.white,
+                                                          fontSize: 16,
+                                                          fontWeight: FontWeight.bold,
+                                                        ),
+                                                      ),
+                                                    ],
+                                                  ),
+                                                ],
+                                              ),
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                                    ],
                                   ),
                                 ),
-                              );
-                            },
-                            child: const Text(
-                              'Filter',
-                              style: TextStyle(color: Colors.blue),
+                              ],
                             ),
                           ),
-                        ],
-                      ),
-                    ),
-                  ),
-
-                  // Expenses list
-                  if (state.data.isLoading && state.data.expenses.data.isEmpty)
-                    const SliverFillRemaining(
-                      child: Center(child: CircularProgressIndicator()),
-                    )
-                  else if (state.data.expenses.data.isEmpty)
-                    SliverFillRemaining(child: _buildEmptyState())
-                  else
-                    SliverPadding(
-                      padding: const EdgeInsets.symmetric(horizontal: 20),
-                      sliver: SliverList(
-                        delegate: SliverChildBuilderDelegate(
-                          (context, index) {
-                            final expense = state.data.expenses.data[index];
-                            return _buildExpenseItem(expense);
-                          },
-                          childCount: state.data.expenses.data.length,
                         ),
                       ),
                     ),
-                ],
-              );
-            },
-          ),
-        ),
-        floatingActionButton: FloatingActionButton(
-          onPressed: () => _navigateToAddExpense(context),
-          backgroundColor: context.colors.primary,
-          child: const Icon(Icons.add, color: Colors.white),
-        ),
-      ),
-    );
-  }
 
-  Widget _buildBalanceInfoCard({
-    required String title,
-    required String amount,
-    required Color color,
-  }) {
-    return Container(
-      width: 140,
-      padding: const EdgeInsets.all(12),
-      decoration: BoxDecoration(
-        color: color.withOpacity(0.1),
-        borderRadius: BorderRadius.circular(8),
-      ),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Text(
-            title,
-            style: const TextStyle(color: Colors.white, fontSize: 12),
-          ),
-          const SizedBox(height: 4),
-          Text(
-            amount,
-            style: const TextStyle(
-              color: Colors.white,
-              fontSize: 16,
-              fontWeight: FontWeight.bold,
+                    // Recent expenses section header
+                    SliverPadding(
+                      padding: const EdgeInsets.fromLTRB(20, 24, 20, 16),
+                      sliver: SliverToBoxAdapter(
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            const Text(
+                              'Recent Expenses',
+                              style: TextStyle(
+                                fontSize: 18,
+                                fontWeight: FontWeight.bold,
+                                color: Color(0xFF2D3142),
+                              ),
+                            ),
+                            TextButton(
+                              onPressed: () {
+                                showModalBottomSheet(
+                                  context: context,
+                                  isScrollControlled: true,
+                                  backgroundColor: Colors.transparent,
+                                  builder: (_) => BlocProvider.value(
+                                    value: _filterCubit,
+                                    child: FilterBottomSheet(
+                                      onApply: (filter) {
+                                        _dashboardCubit.loadInitialData(filter: filter);
+                                        Navigator.of(context).pop();
+                                      },
+                                    ),
+                                  ),
+                                );
+                              },
+                              style: TextButton.styleFrom(
+                                padding: EdgeInsets.zero,
+                                minimumSize: const Size(50, 30),
+                                tapTargetSize: MaterialTapTargetSize.shrinkWrap,
+                              ),
+                              child: const Text(
+                                'see all',
+                                style: TextStyle(
+                                  color: Color(0xFF9CA3AF),
+                                  fontSize: 14,
+                                  fontWeight: FontWeight.w400,
+                                ),
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ),
+
+                    // Expenses list
+                    if (state.data.isLoading && state.data.expenses.data.isEmpty)
+                      const SliverFillRemaining(
+                        child: Center(child: CircularProgressIndicator()),
+                      )
+                    else if (state.data.expenses.data.isEmpty)
+                      SliverFillRemaining(child: _buildEmptyState())
+                    else
+                      SliverPadding(
+                        padding: const EdgeInsets.symmetric(horizontal: 20),
+                        sliver: SliverList(
+                          delegate: SliverChildBuilderDelegate(
+                            (context, index) {
+                              final expense = state.data.expenses.data[index];
+                              return _buildExpenseItem(expense);
+                            },
+                            childCount: state.data.expenses.data.length,
+                          ),
+                        ),
+                      ),
+                    
+                    // Bottom padding for navigation bar
+                    const SliverPadding(
+                      padding: EdgeInsets.only(bottom: 100),
+                    ),
+                  ],
+                );
+              },
             ),
           ),
-        ],
+          bottomNavigationBar: _buildBottomNavigationBar(context),
+          floatingActionButton: Container(
+            width: 64,
+            height: 64,
+            decoration: BoxDecoration(
+              shape: BoxShape.circle,
+              gradient: const LinearGradient(
+                colors: [Color(0xFF5B7DFF), Color(0xFF4C6FFF)],
+                begin: Alignment.topLeft,
+                end: Alignment.bottomRight,
+              ),
+              boxShadow: [
+                BoxShadow(
+                  color: const Color(0xFF4C6FFF).withOpacity(0.4),
+                  blurRadius: 20,
+                  offset: const Offset(0, 10),
+                ),
+              ],
+            ),
+            child: Material(
+              color: Colors.transparent,
+              child: InkWell(
+                onTap: () => _navigateToAddExpense(context),
+                customBorder: const CircleBorder(),
+                child: const Icon(Icons.add, color: Colors.white, size: 32),
+              ),
+            ),
+          ),
+          floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
+        ),
       ),
     );
   }
 
   Widget _buildExpenseItem(ExpenseModel expense) {
+    final categoryColor = _getCategoryColor(expense.category);
+    
     return Container(
       margin: const EdgeInsets.only(bottom: 12),
-      padding: const EdgeInsets.all(10),
+      padding: const EdgeInsets.all(16),
       decoration: BoxDecoration(
         color: Colors.white,
-        borderRadius: BorderRadius.circular(12),
+        borderRadius: BorderRadius.circular(16),
         boxShadow: [
           BoxShadow(
-            color: Colors.grey.withOpacity(0.1),
-            blurRadius: 6,
+            color: Colors.grey.withOpacity(0.08),
+            blurRadius: 10,
             offset: const Offset(0, 2),
           ),
         ],
@@ -298,16 +467,16 @@ class _DashboardScreenState extends State<DashboardScreen> {
       child: Row(
         children: [
           Container(
-            width: 50,
-            height: 50,
+            width: 56,
+            height: 56,
             decoration: BoxDecoration(
-              color: Colors.blue[50],
+              color: categoryColor.withOpacity(0.15),
               shape: BoxShape.circle,
             ),
             alignment: AlignmentDirectional.center,
             child: Text(
               _getCategoryIcon(expense.category),
-              style: const TextStyle(fontSize: 20),
+              style: const TextStyle(fontSize: 24),
             ),
           ),
           const SizedBox(width: 16),
@@ -319,13 +488,18 @@ class _DashboardScreenState extends State<DashboardScreen> {
                   expense.category,
                   style: const TextStyle(
                     fontSize: 16,
-                    fontWeight: FontWeight.w500,
+                    fontWeight: FontWeight.w600,
+                    color: Color(0xFF2D3142),
                   ),
                 ),
-                const SizedBox(height: 2),
+                const SizedBox(height: 4),
                 const Text(
                   'Manually',
-                  style: TextStyle(color: Colors.grey, fontSize: 12),
+                  style: TextStyle(
+                    color: Color(0xFF9CA3AF),
+                    fontSize: 13,
+                    fontWeight: FontWeight.w400,
+                  ),
                 ),
               ],
             ),
@@ -334,16 +508,21 @@ class _DashboardScreenState extends State<DashboardScreen> {
             crossAxisAlignment: CrossAxisAlignment.end,
             children: [
               Text(
-                '-\$${expense.amount.toStringAsFixed(2)}',
+                '- \$${expense.amount.toStringAsFixed(2)}',
                 style: const TextStyle(
                   fontSize: 16,
                   fontWeight: FontWeight.bold,
+                  color: Color(0xFF2D3142),
                 ),
               ),
-              const SizedBox(height: 2),
+              const SizedBox(height: 4),
               const Text(
                 'Today 12:00 PM',
-                style: TextStyle(color: Colors.grey, fontSize: 12),
+                style: TextStyle(
+                  color: Color(0xFF9CA3AF),
+                  fontSize: 12,
+                  fontWeight: FontWeight.w400,
+                ),
               ),
             ],
           ),
@@ -355,13 +534,14 @@ class _DashboardScreenState extends State<DashboardScreen> {
   String _getCategoryIcon(String category) {
     switch (category.toLowerCase()) {
       case 'food & dining':
-        return '🍽';
+      case 'groceries':
+        return '🛒';
       case 'transportation':
         return '🚗';
       case 'shopping':
         return '🛍';
       case 'entertainment':
-        return '🎬';
+        return '🍿';
       case 'bills & utilities':
         return '💡';
       case 'healthcare':
@@ -372,11 +552,77 @@ class _DashboardScreenState extends State<DashboardScreen> {
         return '📚';
       case 'personal care':
         return '💅';
+      case 'rent':
+        return '🏠';
       default:
         return '💰';
     }
   }
 
+  Color _getCategoryColor(String category) {
+    switch (category.toLowerCase()) {
+      case 'food & dining':
+      case 'groceries':
+        return const Color(0xFF6B7FFF);
+      case 'transportation':
+        return const Color(0xFFA78BFA);
+      case 'shopping':
+        return const Color(0xFF60A5FA);
+      case 'entertainment':
+        return const Color(0xFFFFA173);
+      case 'bills & utilities':
+        return const Color(0xFFFCD34D);
+      case 'healthcare':
+        return const Color(0xFFF87171);
+      case 'travel':
+        return const Color(0xFF34D399);
+      case 'education':
+        return const Color(0xFF818CF8);
+      case 'personal care':
+        return const Color(0xFFFBBF24);
+      case 'rent':
+        return const Color(0xFFFFB084);
+      default:
+        return const Color(0xFF6B7FFF);
+    }
+  }
+
+  Widget _buildBottomNavigationBar(BuildContext context) {
+    return Container(
+      height: 80,
+      decoration: BoxDecoration(
+        color: Colors.white,
+        boxShadow: [
+          BoxShadow(
+            color: Colors.black.withOpacity(0.05),
+            blurRadius: 20,
+            offset: const Offset(0, -5),
+          ),
+        ],
+      ),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceAround,
+        children: [
+          _buildNavItem(Icons.home_rounded, true),
+          _buildNavItem(Icons.bar_chart_rounded, false),
+          const SizedBox(width: 64), // Space for FAB
+          _buildNavItem(Icons.credit_card_rounded, false),
+          _buildNavItem(Icons.person_rounded, false),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildNavItem(IconData icon, bool isSelected) {
+    return Container(
+      padding: const EdgeInsets.all(12),
+      child: Icon(
+        icon,
+        color: isSelected ? const Color(0xFF4C6FFF) : const Color(0xFF9CA3AF),
+        size: 28,
+      ),
+    );
+  }
 
   Widget _buildEmptyState() {
     return Center(
