@@ -36,144 +36,84 @@ class _LoginScreenState extends State<LoginScreen> {
     return BlocProvider.value(
       value: _authCubit,
       child: Scaffold(
-        body: Container(
-          decoration: const BoxDecoration(
-            gradient: LinearGradient(
-              colors: [Color(0xFF6C5CE7), Color(0xFF74B9FF)],
-              begin: Alignment.topLeft,
-              end: Alignment.bottomRight,
-            ),
-          ),
-          child: SafeArea(
-            child: BlocConsumer<AuthCubit, GenericState<AuthData>>(
-              listener: (context, state) {
-                if (state is GenericFailedState) {
-                  ScaffoldMessenger.of(context).showSnackBar(
-                    SnackBar(
-                      content: Text(state.error),
-                      backgroundColor: Colors.red,
-                    ),
-                  );
-                } else if (state.data.isLoggedIn) {
-                  Navigator.of(context).pushReplacement(
-                    MaterialPageRoute(
-                      builder: (_) => const DashboardScreen(),
-                    ),
-                  );
-                }
-              },
-              builder: (context, state) {
-                return SingleChildScrollView(
-                  padding: const EdgeInsets.all(24),
-                  child: Column(
-                    children: [
-                      const SizedBox(height: 60),
-
-                      // Logo Section
-                      Container(
-                        width: 100,
-                        height: 100,
-                        decoration: BoxDecoration(
-                          color: Colors.white,
-                          borderRadius: BorderRadius.circular(25),
-                          boxShadow: [
-                            BoxShadow(
-                              color: Colors.black.withOpacity(0.1),
-                              blurRadius: 20,
-                              offset: const Offset(0, 8),
-                            ),
-                          ],
-                        ),
-                        child: const Icon(
-                          Icons.account_balance_wallet,
-                          size: 50,
-                          color: Color(0xFF6C5CE7),
-                        ),
-                      ),
-                      const SizedBox(height: 32),
-
-                      const Text(
-                        'Welcome Back!',
-                        style: TextStyle(
-                          color: Colors.white,
-                          fontSize: 32,
-                          fontWeight: FontWeight.bold,
-                        ),
-                      ),
-                      const SizedBox(height: 8),
-                      Text(
-                        'Sign in to continue tracking your expenses',
-                        style: TextStyle(
-                          color: Colors.white.withOpacity(0.8),
-                          fontSize: 16,
-                        ),
-                        textAlign: TextAlign.center,
-                      ),
-                      const SizedBox(height: 60),
-
-                      // Login Form
-                      Container(
-                        padding: const EdgeInsets.all(24),
-                        decoration: BoxDecoration(
-                          color: Colors.white,
-                          borderRadius: BorderRadius.circular(20),
-                          boxShadow: [
-                            BoxShadow(
-                              color: Colors.black.withOpacity(0.1),
-                              blurRadius: 20,
-                              offset: const Offset(0, 8),
-                            ),
-                          ],
-                        ),
-                        child: Form(
-                          key: _formKey,
-                          child: Column(
-                            children: [
-                              _buildEmailField(),
-                              const SizedBox(height: 20),
-                              _buildPasswordField(state.data),
-                              const SizedBox(height: 32),
-                              _buildLoginButton(state.data),
-                            ],
-                          ),
-                        ),
-                      ),
-                      const SizedBox(height: 32),
-
-                      // Demo Info
-                      Container(
-                        padding: const EdgeInsets.all(16),
-                        decoration: BoxDecoration(
-                          color: Colors.white.withOpacity(0.1),
-                          borderRadius: BorderRadius.circular(12),
-                        ),
-                        child: Column(
-                          children: [
-                            Text(
-                              'Demo Credentials',
-                              style: TextStyle(
-                                color: Colors.white.withOpacity(0.9),
-                                fontSize: 14,
-                                fontWeight: FontWeight.w600,
-                              ),
-                            ),
-                            const SizedBox(height: 8),
-                            Text(
-                              'Email: demo@example.com\nPassword: password123',
-                              style: TextStyle(
-                                color: Colors.white.withOpacity(0.8),
-                                fontSize: 12,
-                              ),
-                              textAlign: TextAlign.center,
-                            ),
-                          ],
-                        ),
-                      ),
-                    ],
+        backgroundColor: const Color(0xFFF5F5F5),
+        body: SafeArea(
+          child: BlocConsumer<AuthCubit, GenericState<AuthData>>(
+            listener: (context, state) {
+              if (state is GenericFailedState) {
+                ScaffoldMessenger.of(context).showSnackBar(
+                  SnackBar(
+                    content: Text(state.error),
+                    backgroundColor: Colors.red,
                   ),
                 );
-              },
-            ),
+              } else if (state.data.isLoggedIn) {
+                Navigator.of(context).pushReplacement(
+                  MaterialPageRoute(
+                    builder: (_) => const DashboardScreen(),
+                  ),
+                );
+              }
+            },
+            builder: (context, state) {
+              return SingleChildScrollView(
+                padding: const EdgeInsets.symmetric(horizontal: 24),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    const SizedBox(height: 40),
+
+                    // Logo
+                    const Text(
+                      'Expenset.',
+                      style: TextStyle(
+                        fontSize: 32,
+                        fontWeight: FontWeight.bold,
+                        color: Color(0xFF4C6FFF),
+                      ),
+                    ),
+                    const SizedBox(height: 80),
+
+                    // Login Title
+                    const Text(
+                      'Login',
+                      style: TextStyle(
+                        fontSize: 32,
+                        fontWeight: FontWeight.bold,
+                        color: Colors.black,
+                      ),
+                    ),
+                    const SizedBox(height: 32),
+
+                    // Form
+                    Form(
+                      key: _formKey,
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          _buildEmailField(),
+                          const SizedBox(height: 24),
+                          _buildPasswordField(state.data),
+                          const SizedBox(height: 12),
+                          _buildForgotPassword(),
+                          const SizedBox(height: 32),
+                          _buildLoginButton(state.data),
+                          const SizedBox(height: 32),
+                          _buildOrDivider(),
+                          const SizedBox(height: 24),
+                          _buildGoogleButton(),
+                          const SizedBox(height: 16),
+                          _buildAppleButton(),
+                          const SizedBox(height: 32),
+                          _buildSignUpLink(),
+                          const SizedBox(height: 32),
+                        ],
+                      ),
+                    ),
+                  ],
+                ),
+              );
+            },
           ),
         ),
       ),
@@ -181,106 +121,348 @@ class _LoginScreenState extends State<LoginScreen> {
   }
 
   Widget _buildEmailField() {
-    return TextFormField(
-      controller: _emailController,
-      keyboardType: TextInputType.emailAddress,
-      decoration: InputDecoration(
-        labelText: 'Email',
-        prefixIcon: const Icon(Icons.email_outlined),
-        border: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(12),
-          borderSide: BorderSide(color: Colors.grey[300]!),
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        const Text(
+          'Email',
+          style: TextStyle(
+            fontSize: 16,
+            fontWeight: FontWeight.w500,
+            color: Colors.black,
+          ),
         ),
-        enabledBorder: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(12),
-          borderSide: BorderSide(color: Colors.grey[300]!),
+        const SizedBox(height: 8),
+        TextFormField(
+          controller: _emailController,
+          keyboardType: TextInputType.emailAddress,
+          style: const TextStyle(fontSize: 16),
+          decoration: InputDecoration(
+            hintText: 'Enter your Name',
+            hintStyle: TextStyle(
+              color: Colors.grey[400],
+              fontSize: 16,
+            ),
+            filled: true,
+            fillColor: const Color(0xFFF5F5F5),
+            border: OutlineInputBorder(
+              borderRadius: BorderRadius.circular(12),
+              borderSide: BorderSide(color: Colors.grey[300]!),
+            ),
+            enabledBorder: OutlineInputBorder(
+              borderRadius: BorderRadius.circular(12),
+              borderSide: BorderSide(color: Colors.grey[300]!),
+            ),
+            focusedBorder: OutlineInputBorder(
+              borderRadius: BorderRadius.circular(12),
+              borderSide: const BorderSide(color: Color(0xFF4C6FFF)),
+            ),
+            errorBorder: OutlineInputBorder(
+              borderRadius: BorderRadius.circular(12),
+              borderSide: const BorderSide(color: Colors.red),
+            ),
+            focusedErrorBorder: OutlineInputBorder(
+              borderRadius: BorderRadius.circular(12),
+              borderSide: const BorderSide(color: Colors.red),
+            ),
+            contentPadding: const EdgeInsets.symmetric(
+              horizontal: 16,
+              vertical: 16,
+            ),
+          ),
+          validator: (value) {
+            if (value == null || value.isEmpty) {
+              return 'Please enter your email';
+            }
+            if (!RegExp(r'^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$').hasMatch(value)) {
+              return 'Please enter a valid email';
+            }
+            return null;
+          },
+          onChanged: _authCubit.updateEmail,
         ),
-        focusedBorder: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(12),
-          borderSide: const BorderSide(color: Color(0xFF6C5CE7)),
-        ),
-      ),
-      validator: (value) {
-        if (value == null || value.isEmpty) {
-          return 'Please enter your email';
-        }
-        if (!RegExp(r'^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$').hasMatch(value)) {
-          return 'Please enter a valid email';
-        }
-        return null;
-      },
-      onChanged: _authCubit.updateEmail,
+      ],
     );
   }
 
   Widget _buildPasswordField(AuthData data) {
-    return TextFormField(
-      controller: _passwordController,
-      obscureText: !data.showPassword,
-      decoration: InputDecoration(
-        labelText: 'Password',
-        prefixIcon: const Icon(Icons.lock_outlined),
-        suffixIcon: IconButton(
-          onPressed: _authCubit.togglePasswordVisibility,
-          icon: Icon(
-            data.showPassword ? Icons.visibility_off : Icons.visibility,
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        const Text(
+          'Password',
+          style: TextStyle(
+            fontSize: 16,
+            fontWeight: FontWeight.w500,
+            color: Colors.black,
           ),
         ),
-        border: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(12),
-          borderSide: BorderSide(color: Colors.grey[300]!),
+        const SizedBox(height: 8),
+        TextFormField(
+          controller: _passwordController,
+          obscureText: !data.showPassword,
+          style: const TextStyle(fontSize: 16),
+          decoration: InputDecoration(
+            hintText: '••••••••••••••••••',
+            hintStyle: TextStyle(
+              color: Colors.grey[400],
+              fontSize: 16,
+            ),
+            filled: true,
+            fillColor: const Color(0xFFF5F5F5),
+            suffixIcon: IconButton(
+              onPressed: _authCubit.togglePasswordVisibility,
+              icon: Icon(
+                data.showPassword ? Icons.visibility_off_outlined : Icons.visibility_outlined,
+                color: Colors.grey[600],
+              ),
+            ),
+            border: OutlineInputBorder(
+              borderRadius: BorderRadius.circular(12),
+              borderSide: BorderSide(color: Colors.grey[300]!),
+            ),
+            enabledBorder: OutlineInputBorder(
+              borderRadius: BorderRadius.circular(12),
+              borderSide: BorderSide(color: Colors.grey[300]!),
+            ),
+            focusedBorder: OutlineInputBorder(
+              borderRadius: BorderRadius.circular(12),
+              borderSide: const BorderSide(color: Color(0xFF4C6FFF)),
+            ),
+            errorBorder: OutlineInputBorder(
+              borderRadius: BorderRadius.circular(12),
+              borderSide: const BorderSide(color: Colors.red),
+            ),
+            focusedErrorBorder: OutlineInputBorder(
+              borderRadius: BorderRadius.circular(12),
+              borderSide: const BorderSide(color: Colors.red),
+            ),
+            contentPadding: const EdgeInsets.symmetric(
+              horizontal: 16,
+              vertical: 16,
+            ),
+          ),
+          validator: (value) {
+            if (value == null || value.isEmpty) {
+              return 'Please enter your password';
+            }
+            if (value.length < 6) {
+              return 'Password must be at least 6 characters';
+            }
+            return null;
+          },
+          onChanged: _authCubit.updatePassword,
         ),
-        enabledBorder: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(12),
-          borderSide: BorderSide(color: Colors.grey[300]!),
+      ],
+    );
+  }
+
+  Widget _buildForgotPassword() {
+    return Align(
+      alignment: Alignment.centerRight,
+      child: TextButton(
+        onPressed: () {
+          // Handle forgot password
+          ScaffoldMessenger.of(context).showSnackBar(
+            const SnackBar(
+              content: Text('Forgot password feature coming soon'),
+            ),
+          );
+        },
+        style: TextButton.styleFrom(
+          padding: EdgeInsets.zero,
+          minimumSize: const Size(0, 0),
+          tapTargetSize: MaterialTapTargetSize.shrinkWrap,
         ),
-        focusedBorder: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(12),
-          borderSide: const BorderSide(color: Color(0xFF6C5CE7)),
+        child: const Text(
+          'Forget Password',
+          style: TextStyle(
+            color: Color(0xFF4C6FFF),
+            fontSize: 14,
+            fontWeight: FontWeight.w500,
+          ),
         ),
       ),
-      validator: (value) {
-        if (value == null || value.isEmpty) {
-          return 'Please enter your password';
-        }
-        if (value.length < 6) {
-          return 'Password must be at least 6 characters';
-        }
-        return null;
-      },
-      onChanged: _authCubit.updatePassword,
     );
   }
 
   Widget _buildLoginButton(AuthData data) {
     return SizedBox(
       width: double.infinity,
+      height: 56,
       child: ElevatedButton(
         onPressed: data.isLoading ? null : _handleLogin,
         style: ElevatedButton.styleFrom(
-          backgroundColor: const Color(0xFF6C5CE7),
-          padding: const EdgeInsets.symmetric(vertical: 16),
+          backgroundColor: const Color(0xFF4C6FFF),
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(12),
+          ),
+          elevation: 0,
+        ),
+        child: data.isLoading
+            ? const SizedBox(
+                width: 24,
+                height: 24,
+                child: CircularProgressIndicator(
+                  color: Colors.white,
+                  strokeWidth: 2,
+                ),
+              )
+            : const Text(
+                'Login',
+                style: TextStyle(
+                  color: Colors.white,
+                  fontSize: 18,
+                  fontWeight: FontWeight.w600,
+                ),
+              ),
+      ),
+    );
+  }
+
+  Widget _buildOrDivider() {
+    return Row(
+      children: [
+        Expanded(
+          child: Divider(
+            color: Colors.grey[300],
+            thickness: 1,
+          ),
+        ),
+        Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 16),
+          child: Text(
+            'Or Login with',
+            style: TextStyle(
+              color: Colors.grey[600],
+              fontSize: 14,
+            ),
+          ),
+        ),
+        Expanded(
+          child: Divider(
+            color: Colors.grey[300],
+            thickness: 1,
+          ),
+        ),
+      ],
+    );
+  }
+
+  Widget _buildGoogleButton() {
+    return SizedBox(
+      width: double.infinity,
+      height: 56,
+      child: OutlinedButton(
+        onPressed: () {
+          // Handle Google login
+          ScaffoldMessenger.of(context).showSnackBar(
+            const SnackBar(
+              content: Text('Google login feature coming soon'),
+            ),
+          );
+        },
+        style: OutlinedButton.styleFrom(
+          side: BorderSide(color: Colors.grey[300]!),
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(12),
           ),
         ),
-        child: data.isLoading
-            ? const SizedBox(
-          width: 24,
-          height: 24,
-          child: CircularProgressIndicator(
-            color: Colors.white,
-            strokeWidth: 2,
-          ),
-        )
-            : const Text(
-          'Sign In',
-          style: TextStyle(
-            color: Colors.white,
-            fontSize: 16,
-            fontWeight: FontWeight.w600,
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Image.network(
+              'https://upload.wikimedia.org/wikipedia/commons/5/53/Google_%22G%22_Logo.svg',
+              height: 24,
+              width: 24,
+              errorBuilder: (context, error, stackTrace) {
+                return const Icon(Icons.g_mobiledata, size: 24, color: Colors.red);
+              },
+            ),
+            const SizedBox(width: 12),
+            const Text(
+              'Continue With Google',
+              style: TextStyle(
+                color: Colors.black,
+                fontSize: 16,
+                fontWeight: FontWeight.w500,
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  Widget _buildAppleButton() {
+    return SizedBox(
+      width: double.infinity,
+      height: 56,
+      child: OutlinedButton(
+        onPressed: () {
+          // Handle Apple login
+          ScaffoldMessenger.of(context).showSnackBar(
+            const SnackBar(
+              content: Text('Apple login feature coming soon'),
+            ),
+          );
+        },
+        style: OutlinedButton.styleFrom(
+          side: BorderSide(color: Colors.grey[300]!),
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(12),
           ),
         ),
+        child: const Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Icon(Icons.apple, size: 24, color: Colors.black),
+            SizedBox(width: 12),
+            Text(
+              'Continue With Google',
+              style: TextStyle(
+                color: Colors.black,
+                fontSize: 16,
+                fontWeight: FontWeight.w500,
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  Widget _buildSignUpLink() {
+    return Center(
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          Text(
+            'Didn\'t have an account? ',
+            style: TextStyle(
+              color: Colors.grey[600],
+              fontSize: 14,
+            ),
+          ),
+          GestureDetector(
+            onTap: () {
+              // Handle sign up
+              ScaffoldMessenger.of(context).showSnackBar(
+                const SnackBar(
+                  content: Text('Sign up feature coming soon'),
+                ),
+              );
+            },
+            child: const Text(
+              'Sign Up',
+              style: TextStyle(
+                color: Color(0xFF4C6FFF),
+                fontSize: 14,
+                fontWeight: FontWeight.w600,
+              ),
+            ),
+          ),
+        ],
       ),
     );
   }

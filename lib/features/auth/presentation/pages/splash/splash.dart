@@ -1,6 +1,5 @@
 import 'package:expense_tracker/core/helpers/di.dart';
 import 'package:expense_tracker/features/auth/presentation/pages/login/login.dart';
-import 'package:expense_tracker/features/auth/presentation/pages/welcome_screen/welcome_screen.dart';
 import 'package:expense_tracker/features/expense_tracker/presentaion/pages/dashboard/dashboard_screen.dart';
 import 'package:flutter/material.dart';
 import '../../../../../core/helpers/local_storage/local_storage.dart';
@@ -64,31 +63,15 @@ class _SplashScreenState extends State<SplashScreen>
   }
 
   void _checkAuthStatus() async {
-    final hasSeenOnboarding = await getIt<LocalStorage>().getItem("hasSeenOnboarding");
     final isLoggedIn = await getIt<LocalStorage>().getItem("isLoggedIn");
 
     if (!mounted) return;
 
-    if (hasSeenOnboarding == null) {
-      _navigateToOnboarding();
-    } else if (isLoggedIn == null) {
+    if (isLoggedIn == null) {
       _navigateToLogin();
     } else {
       _navigateToDashboard();
     }
-  }
-
-  void _navigateToOnboarding() {
-    Navigator.of(context).pushReplacement(
-      PageRouteBuilder(
-        pageBuilder: (context, animation, secondaryAnimation) =>
-        const OnboardingScreen(),
-        transitionsBuilder: (context, animation, secondaryAnimation, child) {
-          return FadeTransition(opacity: animation, child: child);
-        },
-        transitionDuration: const Duration(milliseconds: 600),
-      ),
-    );
   }
 
   void _navigateToLogin() {
