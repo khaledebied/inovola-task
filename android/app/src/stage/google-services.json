@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "227180263062",
+    "project_id": "foz-staging",
+    "storage_bucket": "foz-staging.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:227180263062:android:5f68892d9deb79071f74b7",
+        "android_client_info": {
+          "package_name": "com.tracker.app.stage"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDAv32fGtJPXWFeFcDaLpfd8TMhaNgnfyo"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

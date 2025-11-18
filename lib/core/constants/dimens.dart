@@ -1,0 +1,86 @@
+import 'dart:io';
+
+import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
+
+class Dimens {
+  static double ratio = 1;
+  // (getIt<Utilities>().isIpad() == true ? 7 / 10 : 1.0);
+  static double sp8 = 8.0.sp * ratio;
+  static double sp9 = 9.0.sp * ratio;
+  static double sp10 = 10.0.sp * ratio;
+  static double sp11 = 11.0.sp * ratio;
+  static double sp12 = 12.0.sp * ratio;
+  static double sp13 = 13.0.sp * ratio;
+  static double sp14 = 14.0.sp * ratio;
+  static double sp15 = 15.0.sp * ratio;
+  static double sp16 = 16.0.sp * ratio;
+  static double sp17 = 17.0.sp * ratio;
+  static double sp18 = 18.0.sp * ratio;
+  static double sp19 = 19.0.sp * ratio;
+  static double sp20 = 20.0.sp * ratio;
+  static double sp21 = 21.0.sp * ratio;
+  static double sp22 = 22.0.sp * ratio;
+  static double sp23 = 23.0.sp * ratio;
+  static double sp24 = 24.0.sp * ratio;
+  static double sp25 = 25.0.sp * ratio;
+  static double sp26 = 26.0.sp * ratio;
+  static double sp28 = 28.0.sp * ratio;
+  static double sp30 = 30.0.sp * ratio;
+  static double sp32 = 32.0.sp * ratio;
+  static double sp38 = 38.0.sp * ratio;
+  static double sp40 = 40.0.sp * ratio;
+
+  static double dp1 = 1.0 * ratio;
+  static double dp2 = 2.0 * ratio;
+  static double dp3 = 3.0 * ratio;
+  static double dp4 = 4.0 * ratio;
+  static double dp6 = 6.0 * ratio;
+  static double dp5 = 5.0 * ratio;
+  static double dp7 = 7.0 * ratio;
+  static double dp8 = 8.0 * ratio;
+  static double dp9 = 9.0 * ratio;
+  static double dp10 = 10.0 * ratio;
+  static double dp11 = 11.0 * ratio;
+  static double dp12 = 12.0 * ratio;
+  static double dp13 = 13.0 * ratio;
+  static double dp14 = 14.0 * ratio;
+  static double dp15 = 15.0 * ratio;
+  static double dp16 = 16.0 * ratio;
+  static double dp17 = 17.0 * ratio;
+  static double dp18 = 18.0 * ratio;
+  static double dp19 = 19.0 * ratio;
+  static double dp20 = 20.0 * ratio;
+  static double dp21 = 21.0 * ratio;
+  static double dp22 = 22.0 * ratio;
+  static double dp23 = 23.0 * ratio;
+  static double dp24 = 24.0 * ratio;
+  static double dp25 = 25.0 * ratio;
+  static double dp28 = 28.0 * ratio;
+  static double dp30 = 30.0 * ratio;
+  static double dp32 = 32.0 * ratio;
+  static double dp50 = 50.0 * ratio;
+  static double dp56 = 56.0 * ratio;
+  static double dp62 = 62.0 * ratio;
+  static double dp64 = 64.0 * ratio;
+  static double dp96 = 96.0 * ratio;
+  static double dp128 = 128.0 * ratio;
+  static double dp256 = 256.0 * ratio;
+
+  static double appBarHeight = dp62.h;
+  static EdgeInsetsGeometry defaultScaffoldPadding = EdgeInsets.all(16.w);
+  static EdgeInsetsGeometry defaultPaddingOfOptionButton = EdgeInsets.all(10.w);
+  static EdgeInsetsGeometry defaultPadding = EdgeInsets.symmetric(horizontal: 16.w);
+  static EdgeInsetsGeometry defaultSmallCardPadding = EdgeInsets.symmetric(vertical: 10.h, horizontal: 16.w);
+  static EdgeInsetsGeometry defaultTabPadding = EdgeInsets.symmetric(vertical: 4.h, horizontal: 8.w);
+  static EdgeInsetsGeometry defaultChargeCardPadding = EdgeInsets.symmetric(vertical: 8.h, horizontal: 8.w);
+  static EdgeInsetsGeometry defaultCardPadding = EdgeInsets.symmetric(vertical: 16.h, horizontal: 25.w);
+  static double appBarMarginPX = Platform.isAndroid ? 30.h : 50.h;
+  static double searchBarHeight = dp56.h;
+
+  static double cardBorderRadius = 20.r;
+  static double smallCardBorderRadius = 5.r;
+  static BorderRadius sheetBorderRadius = BorderRadius.vertical(top: Radius.circular(8.r));
+  static BorderRadius borderRadius5PX = BorderRadius.all(Radius.circular(8.r));
+  static BorderRadius borderRadius8PX = BorderRadius.all(Radius.circular(8.r));
+}

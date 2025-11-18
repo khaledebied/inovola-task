@@ -1,0 +1,67 @@
+buildscript {
+    ext.kotlin_version = '1.8.0'
+    repositories {
+        google()
+        mavenCentral()
+    }
+
+    dependencies {
+        classpath 'com.android.tools.build:gradle:7.4.2'
+        classpath 'com.google.gms:google-services:4.4.2'
+        classpath 'com.google.firebase:firebase-crashlytics-gradle:3.0.2'
+        classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
+    }
+}
+
+allprojects {
+    repositories {
+        google()
+        mavenCentral()
+    }
+}
+
+rootProject.buildDir = '../build'
+subprojects {
+    project.buildDir = "${rootProject.buildDir}/${project.name}"
+}
+subprojects {
+    project.evaluationDependsOn(':app')
+}
+
+subprojects {
+    project.configurations.all {
+        resolutionStrategy.eachDependency { details ->
+            if (details.requested.group == 'com.android.support'
+                    && !details.requested.name.contains('multidex') ) {
+                details.useVersion "27.1.1"
+            }
+        }
+    }
+}
+
+
+
+tasks.register("clean", Delete) {
+    delete rootProject.buildDir
+}
+
+configurations {
+    rasterizer
+}
+
+configurations.all {
+    resolutionStrategy {
+        force 'xml-apis:xml-apis:1.4.01'
+    }
+}
+dependencies {
+    rasterizer 'org.apache.xmlgraphics:batik-rasterizer:1.7'
+    rasterizer 'org.apache.xmlgraphics:batik-codec:1.7'
+}
+task svg2png(type: org.gradle.api.tasks.JavaExec) {
+    classpath configurations.rasterizer
+    main "org.apache.batik.apps.rasterizer.Main"
+    // -scriptSecurityOff required as the security manager of batik would interfere with the security manager of gradle
+//    args "-scriptSecurityOff", "-d", "C:\\Users\\ASUS\\AndroidStudioProjects\\roaa\\osos-mobile\\osos-mobile\\assets\\icons\\logo.png", "-m", "image/png", "C:\\Users\\ASUS\\AndroidStudioProjects\\roaa\\osos-mobile\\osos-mobile\\assets\\icons\\logo.svg"
+    args "-scriptSecurityOff", "-d", "../assets/icons/logo.png", "-m", "image/png", "../assets/icons/logo.svg"
+}
