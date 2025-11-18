@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:fluttertoast/fluttertoast.dart';
+// import 'package:fluttertoast/fluttertoast.dart';
 import 'package:expense_tracker/core/constants/gaps.dart';
 import 'package:expense_tracker/core/errors/base_error.dart';
 import 'package:expense_tracker/core/errors/unknown_error.dart';
@@ -77,13 +77,13 @@ abstract class AppSnackBar {
   }
 
   static void showSimpleToast({required String msg, Color? color, Color? textColor, ToastType type = ToastType.error}) {
-    Fluttertoast.showToast(
-        msg: msg,
-        toastLength: Toast.LENGTH_SHORT,
-        gravity: ToastGravity.CENTER,
-        backgroundColor: color ?? toastBgColors[type],
-        textColor: textColor ?? Colors.white,
-        fontSize: 16.0);
+    // Fluttertoast.showToast(
+    //     msg: msg,
+    //     toastLength: Toast.LENGTH_SHORT,
+    //     gravity: ToastGravity.CENTER,
+    //     backgroundColor: color ?? toastBgColors[type],
+    //     textColor: textColor ?? Colors.white,
+    //     fontSize: 16.0);
   }
 }
 

@@ -12,7 +12,6 @@ import 'package:expense_tracker/core/firebase/firebase_analytics_helper.dart'
     as _i370;
 import 'package:expense_tracker/core/firebase/realtime_database.dart' as _i557;
 import 'package:expense_tracker/core/helpers/adaptive_picker.dart' as _i577;
-import 'package:expense_tracker/core/helpers/file_service.dart' as _i204;
 import 'package:expense_tracker/core/helpers/global_context.dart' as _i214;
 import 'package:expense_tracker/core/helpers/global_notification.dart'
     as _i1059;
@@ -88,7 +87,6 @@ extension GetItInjectableX on _i174.GetIt {
       environmentFilter,
     );
     gh.factory<_i325.ShareServices>(() => _i325.ShareServices());
-    gh.factory<_i204.AppFileService>(() => _i204.AppFileService());
     gh.factory<_i1005.PermissionServices>(() => _i1005.PermissionServices());
     gh.factory<_i335.GetCurrencyRate>(() => _i335.GetCurrencyRate());
     gh.factory<_i217.GetExpenses>(() => _i217.GetExpenses());
