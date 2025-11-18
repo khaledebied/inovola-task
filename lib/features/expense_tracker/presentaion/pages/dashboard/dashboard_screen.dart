@@ -7,7 +7,7 @@ import 'package:expense_tracker/features/expense_tracker/presentaion/pages/dashb
 import 'package:expense_tracker/features/expense_tracker/presentaion/pages/dashboard/widgets/dashboard_empty_state.dart';
 import 'package:expense_tracker/features/expense_tracker/presentaion/pages/dashboard/widgets/dashboard_expense_item.dart';
 import 'package:expense_tracker/features/expense_tracker/presentaion/pages/dashboard/widgets/dashboard_fab.dart';
-import 'package:expense_tracker/features/expense_tracker/presentaion/pages/dashboard/widgets/dashboard_header_section.dart';
+import 'package:expense_tracker/features/expense_tracker/presentaion/pages/dashboard/widgets/dashboard_sliver_header_delegate.dart';
 import 'package:expense_tracker/features/expense_tracker/presentaion/pages/dashboard/widgets/recent_expenses_header.dart';
 import 'package:expense_tracker/features/expense_tracker/presentaion/pages/expense_tracker_screen/widgets/filter_bottom_sheet.dart';
 import 'package:flutter/material.dart';
@@ -126,16 +126,19 @@ class _DashboardScreenState extends State<DashboardScreen> {
           return CustomScrollView(
             controller: _scrollController,
             slivers: [
-              // Header with gradient background and balance card
-              SliverToBoxAdapter(
-                child: DashboardHeaderSection(
+              // Animated header with gradient background and balance card
+              SliverPersistentHeader(
+                pinned: true,
+                delegate: DashboardSliverHeaderDelegate(
+                  expandedHeight: MediaQuery.of(context).size.height * 0.33 + 60,
+                  minHeight: 100,
                   onMonthFilterTap: () => _showFilterBottomSheet(context),
                 ),
               ),
 
               // Recent expenses section header
               const SliverPadding(
-                padding: EdgeInsets.fromLTRB(20, 70, 20, 16),
+                padding: EdgeInsets.fromLTRB(20, 24, 20, 16),
                 sliver: SliverToBoxAdapter(
                   child: RecentExpensesHeader(),
                 ),
