@@ -4,8 +4,6 @@ import 'package:expense_tracker/features/expense_tracker/presentaion/pages/dashb
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../manager/auth_cubit/auth_cubit.dart';
-import 'widgets/email_field_widget.dart';
-import 'widgets/password_field_widget.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({Key? key}) : super(key: key);
@@ -94,17 +92,9 @@ class _LoginScreenState extends State<LoginScreen> {
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          EmailFieldWidget(
-                            controller: _emailController,
-                            onChanged: _authCubit.updateEmail,
-                          ),
+                          _buildEmailField(),
                           const SizedBox(height: 24),
-                          PasswordFieldWidget(
-                            controller: _passwordController,
-                            showPassword: state.data.showPassword,
-                            onToggleVisibility: _authCubit.togglePasswordVisibility,
-                            onChanged: _authCubit.updatePassword,
-                          ),
+                          _buildPasswordField(state.data),
                           const SizedBox(height: 12),
                           _buildForgotPassword(),
                           const SizedBox(height: 32),
@@ -128,6 +118,143 @@ class _LoginScreenState extends State<LoginScreen> {
           ),
         ),
       ),
+    );
+  }
+
+  Widget _buildEmailField() {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        const Text(
+          'Email',
+          style: TextStyle(
+            fontSize: 16,
+            fontWeight: FontWeight.w500,
+            color: Colors.black,
+          ),
+        ),
+        const SizedBox(height: 8),
+        TextFormField(
+          controller: _emailController,
+          keyboardType: TextInputType.emailAddress,
+          style: const TextStyle(fontSize: 16),
+          decoration: InputDecoration(
+            hintText: 'Enter your Name',
+            hintStyle: TextStyle(
+              color: Colors.grey[400],
+              fontSize: 16,
+            ),
+            filled: true,
+            fillColor: const Color(0xFFF5F5F5),
+            border: OutlineInputBorder(
+              borderRadius: BorderRadius.circular(12),
+              borderSide: BorderSide(color: Colors.grey[300]!),
+            ),
+            enabledBorder: OutlineInputBorder(
+              borderRadius: BorderRadius.circular(12),
+              borderSide: BorderSide(color: Colors.grey[300]!),
+            ),
+            focusedBorder: OutlineInputBorder(
+              borderRadius: BorderRadius.circular(12),
+              borderSide: BorderSide(color: context.colors.primary),
+            ),
+            errorBorder: OutlineInputBorder(
+              borderRadius: BorderRadius.circular(12),
+              borderSide: const BorderSide(color: Colors.red),
+            ),
+            focusedErrorBorder: OutlineInputBorder(
+              borderRadius: BorderRadius.circular(12),
+              borderSide: const BorderSide(color: Colors.red),
+            ),
+            contentPadding: const EdgeInsets.symmetric(
+              horizontal: 16,
+              vertical: 16,
+            ),
+          ),
+          validator: (value) {
+            if (value == null || value.isEmpty) {
+              return 'Please enter your email';
+            }
+            if (!RegExp(r'^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$').hasMatch(value)) {
+              return 'Please enter a valid email';
+            }
+            return null;
+          },
+          onChanged: _authCubit.updateEmail,
+        ),
+      ],
+    );
+  }
+
+  Widget _buildPasswordField(AuthData data) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        const Text(
+          'Password',
+          style: TextStyle(
+            fontSize: 16,
+            fontWeight: FontWeight.w500,
+            color: Colors.black,
+          ),
+        ),
+        const SizedBox(height: 8),
+        TextFormField(
+          controller: _passwordController,
+          obscureText: !data.showPassword,
+          style: const TextStyle(fontSize: 16),
+          decoration: InputDecoration(
+            hintText: '••••••••••••••••••',
+            hintStyle: TextStyle(
+              color: Colors.grey[400],
+              fontSize: 16,
+            ),
+            filled: true,
+            fillColor: const Color(0xFFF5F5F5),
+            suffixIcon: IconButton(
+              onPressed: _authCubit.togglePasswordVisibility,
+              icon: Icon(
+                data.showPassword ? Icons.visibility_off_outlined : Icons.visibility_outlined,
+                color: Colors.grey[600],
+              ),
+            ),
+            border: OutlineInputBorder(
+              borderRadius: BorderRadius.circular(12),
+              borderSide: BorderSide(color: Colors.grey[300]!),
+            ),
+            enabledBorder: OutlineInputBorder(
+              borderRadius: BorderRadius.circular(12),
+              borderSide: BorderSide(color: Colors.grey[300]!),
+            ),
+            focusedBorder: OutlineInputBorder(
+              borderRadius: BorderRadius.circular(12),
+              borderSide: BorderSide(color: context.colors.primary),
+            ),
+            errorBorder: OutlineInputBorder(
+              borderRadius: BorderRadius.circular(12),
+              borderSide: const BorderSide(color: Colors.red),
+            ),
+            focusedErrorBorder: OutlineInputBorder(
+              borderRadius: BorderRadius.circular(12),
+              borderSide: const BorderSide(color: Colors.red),
+            ),
+            contentPadding: const EdgeInsets.symmetric(
+              horizontal: 16,
+              vertical: 16,
+            ),
+          ),
+          validator: (value) {
+            if (value == null || value.isEmpty) {
+              return 'Please enter your password';
+            }
+            if (value.length < 6) {
+              return 'Password must be at least 6 characters';
+            }
+            return null;
+          },
+          onChanged: _authCubit.updatePassword,
+        ),
+      ],
     );
   }
 
