@@ -5,7 +5,7 @@ import 'package:expense_tracker/core/theme/text/app_text_style.dart';
 class CustomInputDecoration extends InputDecoration {
   final String lang;
   final String? labelTxt;
-  final String? hint;
+  final Widget? hint;
   final Widget? prefIcon;
   final Widget? sufIcon;
   final Color? enableColor;
@@ -48,8 +48,7 @@ class CustomInputDecoration extends InputDecoration {
   @override
   TextStyle get errorStyle => AppTextStyle.s11_w400(color: AppColors.snackBarRedError);
 
-  @override
-  String? get hintText => hint;
+  Widget? get hintString => hint;
 
   @override
   Widget? get label => labelTxt == null

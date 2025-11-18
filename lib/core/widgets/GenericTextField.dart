@@ -126,7 +126,7 @@ class GenericTextField extends StatelessWidget {
       style: AppTextStyle.s14_w400(color: textColor ?? context.colors.black).copyWith(fontFamily: fontFamily),
       decoration: CustomInputDecoration(
         labelTxt: label,
-        hint: hint,
+        hint: Text(hint ?? "", style: AppTextStyle.s14_w400(color: hintColor ?? context.colors.blackOpacity),),
         prefIcon: prefixIcon,
         sufIcon: suffixIcon,
         enableColor: enableBorderColor,

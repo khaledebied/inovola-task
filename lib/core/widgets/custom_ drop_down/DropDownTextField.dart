@@ -106,7 +106,7 @@ class _DropdownTextFieldState<DataType> extends State<DropdownTextField> {
         searchBoxStyle: AppTextStyle.s16_w500(color: context.colors.black),
         searchBoxDecoration: CustomInputDecoration(
           labelTxt: widget.searchHint ?? "بحث",
-          hint: widget.searchHint ?? "بحث",
+          hint: Text(widget.searchHint ?? "بحث", style: AppTextStyle.s16_w400(color: context.colors.blackOpacity),),
           customFillColor: context.colors.lightGrey,
           padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
           prefIcon: widget.prefix,
@@ -131,7 +131,7 @@ class _DropdownTextFieldState<DataType> extends State<DropdownTextField> {
         ),
         dropdownSearchDecoration: CustomInputDecoration(
           labelTxt: widget.label,
-          hint: widget.hint,
+          hint: Text(widget.hint ?? "", style: AppTextStyle.s16_w400(color: context.colors.blackOpacity),),
           enableColor: widget.enableColor,
           customFillColor: widget.fillColor,
           padding: widget.contentPadding ?? const EdgeInsets.symmetric(horizontal: 10, vertical: 12),
