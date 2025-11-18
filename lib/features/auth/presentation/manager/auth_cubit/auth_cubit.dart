@@ -60,7 +60,7 @@ class AuthCubit extends GenericBloc<AuthData> {
       await Future.delayed(const Duration(seconds: 2));
 
       // Simple demo authentication
-      if (state.data.email == 'demo@example.com' && state.data.password == 'password123') {
+      if (state.data.email == 'inovolaTask@exa.com' && state.data.password == '12345678') {
         await getIt<LocalStorage>().setItem("isLoggedIn", "true");
         await getIt<LocalStorage>().setItem("userEmail", state.data.email);
 
