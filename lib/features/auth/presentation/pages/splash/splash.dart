@@ -1,5 +1,6 @@
 import 'package:expense_tracker/core/helpers/di.dart';
 import 'package:expense_tracker/core/theme/colors/app_colors.dart';
+import 'package:expense_tracker/core/theme/colors/colors_extension.dart';
 import 'package:expense_tracker/features/auth/presentation/pages/login/login.dart';
 import 'package:expense_tracker/features/expense_tracker/presentaion/pages/dashboard/dashboard_screen.dart';
 import 'package:flutter/material.dart';
@@ -113,7 +114,7 @@ class _SplashScreenState extends State<SplashScreen>
                 child: Text(
                   'Expenset.',
                   style: TextStyle(
-                    color: AppColors.of(context).primary,
+                    color: context.colors.primary,
                     fontSize: 48,
                     fontWeight: FontWeight.bold,
                     letterSpacing: -1,

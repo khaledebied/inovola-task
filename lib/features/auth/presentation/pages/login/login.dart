@@ -1,5 +1,6 @@
 import 'package:expense_tracker/core/bloc/generic_cubit/generic_cubit.dart';
 import 'package:expense_tracker/core/theme/colors/app_colors.dart';
+import 'package:expense_tracker/core/theme/colors/colors_extension.dart';
 import 'package:expense_tracker/features/expense_tracker/presentaion/pages/dashboard/dashboard_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -70,7 +71,7 @@ class _LoginScreenState extends State<LoginScreen> {
                       style: TextStyle(
                         fontSize: 32,
                         fontWeight: FontWeight.bold,
-                        color: AppColors.of(context).primary,
+                        color: context.colors.primary,
                       ),
                     ),
                     const SizedBox(height: 80),
