@@ -17,7 +17,7 @@ class AddExpenseScreen extends StatefulWidget {
 class _AddExpenseScreenState extends State<AddExpenseScreen> {
   // Constants for UI styling
   static const Color _backgroundColor = Color(0xFFF8F9FA);
-  static const Color _primaryColor = Color(0xFF6C5CE7);
+  static const Color _primaryColor = Color(0xff1d55f3);
   static const Color _textColor = Color(0xFF2D3436);
   static const Color _hintColor = Color(0xFFB2BEC3);
   static const Color _inputBackgroundColor = Color(0xFFF5F5F5);

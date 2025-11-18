@@ -66,7 +66,7 @@ class DashboardSliverHeaderDelegate extends SliverPersistentHeaderDelegate {
         // Balance card - positioned and animated
         if (shrinkOffset < maxExtent - 80)
           Positioned(
-            bottom: -60,
+            bottom: -40,
             left: 0,
             right: 0,
             child: Center(
