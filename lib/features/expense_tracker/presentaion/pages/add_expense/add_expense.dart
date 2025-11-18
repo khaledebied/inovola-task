@@ -1,5 +1,6 @@
 import 'dart:io';
 import 'package:expense_tracker/core/bloc/generic_cubit/generic_cubit.dart';
+import 'package:expense_tracker/core/theme/colors/app_colors.dart';
 import 'package:expense_tracker/features/expense_tracker/presentaion/manager/add_expense_cubit/add_expense_cubit.dart';
 import 'package:expense_tracker/features/expense_tracker/presentaion/pages/expense_tracker_screen/widgets/category_selection_grid.dart';
 import 'package:expense_tracker/features/expense_tracker/presentaion/pages/expense_tracker_screen/widgets/currency_dropdown.dart';
@@ -73,10 +74,10 @@ class _AddExpenseScreenState extends State<AddExpenseScreen> {
                     height: 20,
                     child: CircularProgressIndicator(strokeWidth: 2),
                   )
-                      : const Text(
+                      : Text(
                     'Save',
                     style: TextStyle(
-                      color: Color(0xFF6C5CE7),
+                      color: AppColors.of(context).primary,
                       fontSize: 16,
                       fontWeight: FontWeight.w600,
                     ),

@@ -1,4 +1,5 @@
 import 'package:expense_tracker/core/helpers/di.dart';
+import 'package:expense_tracker/core/theme/colors/app_colors.dart';
 import 'package:expense_tracker/features/auth/presentation/pages/login/login.dart';
 import 'package:expense_tracker/features/expense_tracker/presentaion/pages/dashboard/dashboard_screen.dart';
 import 'package:flutter/material.dart';
@@ -13,34 +14,20 @@ class SplashScreen extends StatefulWidget {
 
 class _SplashScreenState extends State<SplashScreen>
     with TickerProviderStateMixin {
-  late AnimationController _logoController;
   late AnimationController _textController;
-  late Animation<double> _logoAnimation;
-  late Animation<double> _textAnimation;
+  late Animation<double> _fadeAnimation;
+  late Animation<double> _scaleAnimation;
 
   @override
   void initState() {
     super.initState();
 
-    _logoController = AnimationController(
+    _textController = AnimationController(
       duration: const Duration(milliseconds: 1500),
       vsync: this,
     );
 
-    _textController = AnimationController(
-      duration: const Duration(milliseconds: 1000),
-      vsync: this,
-    );
-
-    _logoAnimation = Tween<double>(
-      begin: 0.0,
-      end: 1.0,
-    ).animate(CurvedAnimation(
-      parent: _logoController,
-      curve: Curves.elasticOut,
-    ));
-
-    _textAnimation = Tween<double>(
+    _fadeAnimation = Tween<double>(
       begin: 0.0,
       end: 1.0,
     ).animate(CurvedAnimation(
@@ -48,14 +35,19 @@ class _SplashScreenState extends State<SplashScreen>
       curve: Curves.easeInOut,
     ));
 
+    _scaleAnimation = Tween<double>(
+      begin: 0.5,
+      end: 1.0,
+    ).animate(CurvedAnimation(
+      parent: _textController,
+      curve: Curves.elasticOut,
+    ));
+
     _startAnimations();
   }
 
   void _startAnimations() async {
-    await Future.delayed(const Duration(milliseconds: 500));
-    _logoController.forward();
-
-    await Future.delayed(const Duration(milliseconds: 800));
+    await Future.delayed(const Duration(milliseconds: 300));
     _textController.forward();
 
     await Future.delayed(const Duration(milliseconds: 2000));
@@ -102,7 +94,6 @@ class _SplashScreenState extends State<SplashScreen>
 
   @override
   void dispose() {
-    _logoController.dispose();
     _textController.dispose();
     super.dispose();
   }
@@ -110,77 +101,27 @@ class _SplashScreenState extends State<SplashScreen>
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Container(
-        decoration: const BoxDecoration(
-          gradient: LinearGradient(
-            colors: [Color(0xFF6C5CE7), Color(0xFF74B9FF)],
-            begin: Alignment.topLeft,
-            end: Alignment.bottomRight,
-          ),
-        ),
-        child: Center(
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              AnimatedBuilder(
-                animation: _logoAnimation,
-                builder: (context, child) {
-                  return Transform.scale(
-                    scale: _logoAnimation.value,
-                    child: Container(
-                      width: 120,
-                      height: 120,
-                      decoration: BoxDecoration(
-                        color: Colors.white,
-                        borderRadius: BorderRadius.circular(30),
-                        boxShadow: [
-                          BoxShadow(
-                            color: Colors.black.withOpacity(0.2),
-                            blurRadius: 20,
-                            offset: const Offset(0, 10),
-                          ),
-                        ],
-                      ),
-                      child: const Icon(
-                        Icons.account_balance_wallet,
-                        size: 60,
-                        color: Color(0xFF6C5CE7),
-                      ),
-                    ),
-                  );
-                },
+      backgroundColor: Colors.white,
+      body: Center(
+        child: AnimatedBuilder(
+          animation: _textController,
+          builder: (context, child) {
+            return FadeTransition(
+              opacity: _fadeAnimation,
+              child: ScaleTransition(
+                scale: _scaleAnimation,
+                child: Text(
+                  'Expenset.',
+                  style: TextStyle(
+                    color: AppColors.of(context).primary,
+                    fontSize: 48,
+                    fontWeight: FontWeight.bold,
+                    letterSpacing: -1,
+                  ),
+                ),
               ),
-              const SizedBox(height: 32),
-              AnimatedBuilder(
-                animation: _textAnimation,
-                builder: (context, child) {
-                  return Opacity(
-                    opacity: _textAnimation.value,
-                    child: Column(
-                      children: [
-                        const Text(
-                          'Expense Tracker',
-                          style: TextStyle(
-                            color: Colors.white,
-                            fontSize: 32,
-                            fontWeight: FontWeight.bold,
-                          ),
-                        ),
-                        const SizedBox(height: 8),
-                        Text(
-                          'Track your expenses with ease',
-                          style: TextStyle(
-                            color: Colors.white.withOpacity(0.8),
-                            fontSize: 16,
-                          ),
-                        ),
-                      ],
-                    ),
-                  );
-                },
-              ),
-            ],
-          ),
+            );
+          },
         ),
       ),
     );
