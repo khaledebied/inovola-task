@@ -27,12 +27,8 @@ mixin _$UserResponseModel {
   @JsonKey(name: "data")
   UserModel? get data => throw _privateConstructorUsedError;
 
-  /// Serializes this UserResponseModel to a JSON map.
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
-
-  /// Create a copy of UserResponseModel
-  /// with the given fields replaced by the non-null parameter values.
-  @JsonKey(includeFromJson: false, includeToJson: false)
+  @JsonKey(ignore: true)
   $UserResponseModelCopyWith<UserResponseModel> get copyWith =>
       throw _privateConstructorUsedError;
 }
@@ -61,8 +57,6 @@ class _$UserResponseModelCopyWithImpl<$Res, $Val extends UserResponseModel>
   // ignore: unused_field
   final $Res Function($Val) _then;
 
-  /// Create a copy of UserResponseModel
-  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -86,8 +80,6 @@ class _$UserResponseModelCopyWithImpl<$Res, $Val extends UserResponseModel>
     ) as $Val);
   }
 
-  /// Create a copy of UserResponseModel
-  /// with the given fields replaced by the non-null parameter values.
   @override
   @pragma('vm:prefer-inline')
   $UserModelCopyWith<$Res>? get data {
@@ -126,8 +118,6 @@ class __$$UserResponseModelImplCopyWithImpl<$Res>
       $Res Function(_$UserResponseModelImpl) _then)
       : super(_value, _then);
 
-  /// Create a copy of UserResponseModel
-  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -188,13 +178,11 @@ class _$UserResponseModelImpl implements _UserResponseModel {
             (identical(other.data, data) || other.data == data));
   }
 
-  @JsonKey(includeFromJson: false, includeToJson: false)
+  @JsonKey(ignore: true)
   @override
   int get hashCode => Object.hash(runtimeType, key, msg, data);
 
-  /// Create a copy of UserResponseModel
-  /// with the given fields replaced by the non-null parameter values.
-  @JsonKey(includeFromJson: false, includeToJson: false)
+  @JsonKey(ignore: true)
   @override
   @pragma('vm:prefer-inline')
   _$$UserResponseModelImplCopyWith<_$UserResponseModelImpl> get copyWith =>
@@ -227,11 +215,8 @@ abstract class _UserResponseModel implements UserResponseModel {
   @override
   @JsonKey(name: "data")
   UserModel? get data;
-
-  /// Create a copy of UserResponseModel
-  /// with the given fields replaced by the non-null parameter values.
   @override
-  @JsonKey(includeFromJson: false, includeToJson: false)
+  @JsonKey(ignore: true)
   _$$UserResponseModelImplCopyWith<_$UserResponseModelImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }

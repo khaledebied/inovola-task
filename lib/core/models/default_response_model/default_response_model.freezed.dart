@@ -25,12 +25,8 @@ mixin _$DefaultResponseModel {
   @JsonKey(name: 'message')
   String? get message => throw _privateConstructorUsedError;
 
-  /// Serializes this DefaultResponseModel to a JSON map.
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
-
-  /// Create a copy of DefaultResponseModel
-  /// with the given fields replaced by the non-null parameter values.
-  @JsonKey(includeFromJson: false, includeToJson: false)
+  @JsonKey(ignore: true)
   $DefaultResponseModelCopyWith<DefaultResponseModel> get copyWith =>
       throw _privateConstructorUsedError;
 }
@@ -57,8 +53,6 @@ class _$DefaultResponseModelCopyWithImpl<$Res,
   // ignore: unused_field
   final $Res Function($Val) _then;
 
-  /// Create a copy of DefaultResponseModel
-  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -99,8 +93,6 @@ class __$$DefaultResponseModelImplCopyWithImpl<$Res>
       $Res Function(_$DefaultResponseModelImpl) _then)
       : super(_value, _then);
 
-  /// Create a copy of DefaultResponseModel
-  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -150,13 +142,11 @@ class _$DefaultResponseModelImpl implements _DefaultResponseModel {
             (identical(other.message, message) || other.message == message));
   }
 
-  @JsonKey(includeFromJson: false, includeToJson: false)
+  @JsonKey(ignore: true)
   @override
   int get hashCode => Object.hash(runtimeType, key, message);
 
-  /// Create a copy of DefaultResponseModel
-  /// with the given fields replaced by the non-null parameter values.
-  @JsonKey(includeFromJson: false, includeToJson: false)
+  @JsonKey(ignore: true)
   @override
   @pragma('vm:prefer-inline')
   _$$DefaultResponseModelImplCopyWith<_$DefaultResponseModelImpl>
@@ -187,11 +177,8 @@ abstract class _DefaultResponseModel implements DefaultResponseModel {
   @override
   @JsonKey(name: 'message')
   String? get message;
-
-  /// Create a copy of DefaultResponseModel
-  /// with the given fields replaced by the non-null parameter values.
   @override
-  @JsonKey(includeFromJson: false, includeToJson: false)
+  @JsonKey(ignore: true)
   _$$DefaultResponseModelImplCopyWith<_$DefaultResponseModelImpl>
       get copyWith => throw _privateConstructorUsedError;
 }

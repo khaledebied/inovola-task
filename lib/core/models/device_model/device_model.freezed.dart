@@ -24,9 +24,7 @@ mixin _$DeviceModel {
   bool get isNetworkConnected => throw _privateConstructorUsedError;
   AdaptiveThemeMode get themeMode => throw _privateConstructorUsedError;
 
-  /// Create a copy of DeviceModel
-  /// with the given fields replaced by the non-null parameter values.
-  @JsonKey(includeFromJson: false, includeToJson: false)
+  @JsonKey(ignore: true)
   $DeviceModelCopyWith<DeviceModel> get copyWith =>
       throw _privateConstructorUsedError;
 }
@@ -57,8 +55,6 @@ class _$DeviceModelCopyWithImpl<$Res, $Val extends DeviceModel>
   // ignore: unused_field
   final $Res Function($Val) _then;
 
-  /// Create a copy of DeviceModel
-  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -129,8 +125,6 @@ class __$$DeviceModelImplCopyWithImpl<$Res>
       _$DeviceModelImpl _value, $Res Function(_$DeviceModelImpl) _then)
       : super(_value, _then);
 
-  /// Create a copy of DeviceModel
-  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -230,9 +224,7 @@ class _$DeviceModelImpl implements _DeviceModel {
   int get hashCode => Object.hash(runtimeType, locale, auth, isBundle, isTablet,
       isSmallPhone, isNetworkConnected, themeMode);
 
-  /// Create a copy of DeviceModel
-  /// with the given fields replaced by the non-null parameter values.
-  @JsonKey(includeFromJson: false, includeToJson: false)
+  @JsonKey(ignore: true)
   @override
   @pragma('vm:prefer-inline')
   _$$DeviceModelImplCopyWith<_$DeviceModelImpl> get copyWith =>
@@ -263,11 +255,8 @@ abstract class _DeviceModel implements DeviceModel {
   bool get isNetworkConnected;
   @override
   AdaptiveThemeMode get themeMode;
-
-  /// Create a copy of DeviceModel
-  /// with the given fields replaced by the non-null parameter values.
   @override
-  @JsonKey(includeFromJson: false, includeToJson: false)
+  @JsonKey(ignore: true)
   _$$DeviceModelImplCopyWith<_$DeviceModelImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }

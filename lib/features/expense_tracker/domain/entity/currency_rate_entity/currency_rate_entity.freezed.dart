@@ -25,12 +25,8 @@ mixin _$CurrencyRateEntity {
   double get rate => throw _privateConstructorUsedError;
   DateTime get lastUpdated => throw _privateConstructorUsedError;
 
-  /// Serializes this CurrencyRateEntity to a JSON map.
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
-
-  /// Create a copy of CurrencyRateEntity
-  /// with the given fields replaced by the non-null parameter values.
-  @JsonKey(includeFromJson: false, includeToJson: false)
+  @JsonKey(ignore: true)
   $CurrencyRateEntityCopyWith<CurrencyRateEntity> get copyWith =>
       throw _privateConstructorUsedError;
 }
@@ -54,8 +50,6 @@ class _$CurrencyRateEntityCopyWithImpl<$Res, $Val extends CurrencyRateEntity>
   // ignore: unused_field
   final $Res Function($Val) _then;
 
-  /// Create a copy of CurrencyRateEntity
-  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -104,8 +98,6 @@ class __$$CurrencyRateEntityImplCopyWithImpl<$Res>
       $Res Function(_$CurrencyRateEntityImpl) _then)
       : super(_value, _then);
 
-  /// Create a copy of CurrencyRateEntity
-  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -173,13 +165,11 @@ class _$CurrencyRateEntityImpl implements _CurrencyRateEntity {
                 other.lastUpdated == lastUpdated));
   }
 
-  @JsonKey(includeFromJson: false, includeToJson: false)
+  @JsonKey(ignore: true)
   @override
   int get hashCode => Object.hash(runtimeType, from, to, rate, lastUpdated);
 
-  /// Create a copy of CurrencyRateEntity
-  /// with the given fields replaced by the non-null parameter values.
-  @JsonKey(includeFromJson: false, includeToJson: false)
+  @JsonKey(ignore: true)
   @override
   @pragma('vm:prefer-inline')
   _$$CurrencyRateEntityImplCopyWith<_$CurrencyRateEntityImpl> get copyWith =>
@@ -212,11 +202,8 @@ abstract class _CurrencyRateEntity implements CurrencyRateEntity {
   double get rate;
   @override
   DateTime get lastUpdated;
-
-  /// Create a copy of CurrencyRateEntity
-  /// with the given fields replaced by the non-null parameter values.
   @override
-  @JsonKey(includeFromJson: false, includeToJson: false)
+  @JsonKey(ignore: true)
   _$$CurrencyRateEntityImplCopyWith<_$CurrencyRateEntityImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }

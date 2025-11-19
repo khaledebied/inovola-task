@@ -27,12 +27,8 @@ mixin _$ExpenseSummaryEntity {
       throw _privateConstructorUsedError;
   String get currency => throw _privateConstructorUsedError;
 
-  /// Serializes this ExpenseSummaryEntity to a JSON map.
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
-
-  /// Create a copy of ExpenseSummaryEntity
-  /// with the given fields replaced by the non-null parameter values.
-  @JsonKey(includeFromJson: false, includeToJson: false)
+  @JsonKey(ignore: true)
   $ExpenseSummaryEntityCopyWith<ExpenseSummaryEntity> get copyWith =>
       throw _privateConstructorUsedError;
 }
@@ -62,8 +58,6 @@ class _$ExpenseSummaryEntityCopyWithImpl<$Res,
   // ignore: unused_field
   final $Res Function($Val) _then;
 
-  /// Create a copy of ExpenseSummaryEntity
-  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -122,8 +116,6 @@ class __$$ExpenseSummaryEntityImplCopyWithImpl<$Res>
       $Res Function(_$ExpenseSummaryEntityImpl) _then)
       : super(_value, _then);
 
-  /// Create a copy of ExpenseSummaryEntity
-  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -211,7 +203,7 @@ class _$ExpenseSummaryEntityImpl implements _ExpenseSummaryEntity {
                 other.currency == currency));
   }
 
-  @JsonKey(includeFromJson: false, includeToJson: false)
+  @JsonKey(ignore: true)
   @override
   int get hashCode => Object.hash(
       runtimeType,
@@ -221,9 +213,7 @@ class _$ExpenseSummaryEntityImpl implements _ExpenseSummaryEntity {
       const DeepCollectionEquality().hash(_categoryBreakdown),
       currency);
 
-  /// Create a copy of ExpenseSummaryEntity
-  /// with the given fields replaced by the non-null parameter values.
-  @JsonKey(includeFromJson: false, includeToJson: false)
+  @JsonKey(ignore: true)
   @override
   @pragma('vm:prefer-inline')
   _$$ExpenseSummaryEntityImplCopyWith<_$ExpenseSummaryEntityImpl>
@@ -260,11 +250,8 @@ abstract class _ExpenseSummaryEntity implements ExpenseSummaryEntity {
   Map<String, double> get categoryBreakdown;
   @override
   String get currency;
-
-  /// Create a copy of ExpenseSummaryEntity
-  /// with the given fields replaced by the non-null parameter values.
   @override
-  @JsonKey(includeFromJson: false, includeToJson: false)
+  @JsonKey(ignore: true)
   _$$ExpenseSummaryEntityImplCopyWith<_$ExpenseSummaryEntityImpl>
       get copyWith => throw _privateConstructorUsedError;
 }
