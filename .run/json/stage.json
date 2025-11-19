@@ -3,7 +3,7 @@
   "APP_BASE_URL": "https://staging.tracker.sa/",
   "APP_ENV_NAME": "stage",
   "APP_API": "api/",
-  "APP_APP_NAME_EN": "Expense Tracker",
-  "APP_APP_NAME_AR": "تتبع المصروفات",
+  "APP_APP_NAME_EN": "Expenset",
+  "APP_APP_NAME_AR": "Expenset",
   "APP_LOCAL_LOGO": "assets/icons/icon.png"
 }

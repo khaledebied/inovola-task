@@ -130,7 +130,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
               SliverPersistentHeader(
                 pinned: true,
                 delegate: DashboardSliverHeaderDelegate(
-                  expandedHeight: MediaQuery.of(context).size.height * 0.33 + 60,
+                  expandedHeight: MediaQuery.of(context).size.height * 0.3 + 40,
                   minHeight: 100,
                   onMonthFilterTap: () => _showFilterBottomSheet(context),
                 ),
@@ -138,7 +138,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
 
               // Recent expenses section header
               const SliverPadding(
-                padding: EdgeInsets.fromLTRB(20, 24, 20, 16),
+                padding: EdgeInsets.fromLTRB(20, 60, 20, 16),
                 sliver: SliverToBoxAdapter(
                   child: RecentExpensesHeader(),
                 ),

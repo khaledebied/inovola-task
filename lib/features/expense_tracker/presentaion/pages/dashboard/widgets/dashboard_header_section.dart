@@ -17,7 +17,7 @@ class DashboardHeaderSection extends StatelessWidget {
       clipBehavior: Clip.none,
       children: [
         Container(
-          height: MediaQuery.of(context).size.height * 0.33,
+          height: MediaQuery.of(context).size.height * 0.3,
           decoration: BoxDecoration(
             color: context.colors.primary,
             borderRadius: const BorderRadius.only(
@@ -46,7 +46,7 @@ class DashboardHeaderSection extends StatelessWidget {
           ),
         ),
         const Positioned(
-          bottom: -60,
+          bottom: -20,
           child: DashboardBalanceCard(),
         ),
       ],
