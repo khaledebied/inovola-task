@@ -422,16 +422,16 @@ To add screenshots:
 
 ```markdown
 ### Login Screen
-![Login Screen](assets/screenshots/login.png)
+![Login Screen](assets/icons/Screenshot_20251118_214256.png)
 
 ### Dashboard
-![Dashboard](assets/screenshots/dashboard.png)
+![Dashboard](assets/icons/Screenshot_20251118_214449.png)
 
 ### Add Expense
-![Add Expense](assets/screenshots/add_expense.png)
+![Add Expense](assets/icons/Screenshot_20251118_214523.png)
 
 ### Filter Options
-![Filters](assets/screenshots/filters.png)
+![Filters](assets/icons/Screenshot_20251118_214502.png)
 ```
 
 ---
@@ -558,34 +558,7 @@ flutter run -d <device-id>
 **Hot Restart**: Press `R` in terminal
 **Quit**: Press `q` in terminal
 
-### Build Release
 
-**Android APK:**
-```bash
-flutter build apk --release
-```
-
-**Android App Bundle:**
-```bash
-flutter build appbundle --release
-```
-
-**iOS:**
-```bash
-flutter build ios --release
-```
-
-### Running Tests
-
-```bash
-# Run all tests
-flutter test
-
-# Run specific test file
-flutter test test/add_expense_cubit_currency_test.dart
-
-# Run with coverage
-flutter test --coverage
 ```
 
 ### Troubleshooting
@@ -632,72 +605,20 @@ Use the following credentials to log in to the application:
 ### Known Bugs
 
 1. **Sync Indicator**
-   - Sometimes sync indicator doesn't hide immediately after successful sync
-   - **Workaround**: Pull to refresh
+    - Sometimes sync indicator doesn't hide immediately after successful sync
+    - **Workaround**: Pull to refresh
 
 2. **Currency Conversion**
-   - Exchange rate API may fail occasionally (free tier limitations)
-   - **Workaround**: Cached rates used as fallback
+    - Exchange rate API may fail occasionally (free tier limitations)
+    - **Workaround**: Cached rates used as fallback
 
 3. **Image Upload**
-   - Large images may cause memory issues on older devices
-   - **Status**: Image compression needed
+    - Large images may cause memory issues on older devices
+    - **Status**: Image compression needed
 
 4. **Filter Persistence**
-   - Filters reset when app is closed
-   - **Status**: Filter state not persisted locally
-
-### Unimplemented Features
-
-1. **Edit Expense**
-   - Currently can only add expenses, not edit existing ones
-   - **Priority**: High
-
-2. **Delete Expense**
-   - No delete functionality implemented
-   - **Priority**: High
-
-3. **Expense Search**
-   - Search by description or amount not available
-   - **Priority**: Medium
-
-4. **Data Export**
-   - Export to CSV/PDF not implemented
-   - **Priority**: Medium
-
-5. **Budget Tracking**
-   - Set monthly budgets per category
-   - **Priority**: Medium
-
-6. **Recurring Expenses**
-   - No support for recurring/scheduled expenses
-   - **Priority**: Low
-
-7. **Multi-language Support**
-   - Currently English only (framework supports i18n)
-   - **Priority**: Low
-
-8. **Dark Mode**
-   - Theme infrastructure exists but not fully implemented
-   - **Priority**: Low
-
-9. **Biometric Authentication**
-   - Fingerprint/Face ID login
-   - **Priority**: Low
-
-10. **Expense Analytics**
-    - Charts and graphs for expense visualization
-    - **Priority**: Medium
-
-11. **Receipt OCR**
-    - Automatic data extraction from receipt images
-    - **Priority**: Low
-
-12. **Shared Expenses**
-    - Share expenses with other users/groups
-    - **Priority**: Low
-
----
+    - Filters reset when app is closed
+    - **Status**: Filter state not persisted locally
 
 ## 📚 Additional Documentation
 
@@ -742,13 +663,3 @@ Use the following credentials to log in to the application:
 ## 📄 License
 
 This project is for demonstration purposes.
-
----
-
-## 📞 Contact & Support
-
-For questions or issues, please open an issue in the repository.
-
----
-
-**Built with ❤️ using Flutter**
